@@ -36,6 +36,6 @@ Route::get('car_parking_singapur_api',[ApiController::class,'car_parking_singapu
 
         // graph api
 
-Route::get('price_graph',[ApiController::class,'price_graph']);
+Route::post('price_graph',[ApiController::class,'price_graph']);
 
 

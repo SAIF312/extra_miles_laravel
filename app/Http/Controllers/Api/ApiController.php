@@ -163,6 +163,21 @@ class ApiController extends Controller
 
     }
 
+    public function fuel_types_api(){
+        $fuel_types = Grade::all();
+        if(count($fuel_types) > 0){
+        return response()->json([
+            "status" => 200,
+            "data"=> $fuel_types
+        ]);
+        }
+        else{
+            return response()->json([
+                "status" => 404,
+                "message"=> "not found any data"
+            ]);
+        }
+    }
 
    
 }

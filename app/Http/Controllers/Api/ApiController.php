@@ -163,6 +163,35 @@ class ApiController extends Controller
 
     }
 
+    public function motorist_price_graph(Request $request){
+
+        $pumps = array_reverse(MotoristFuelPrice::latest()->limit(5)->pluck('pump')->toArray());
+        // return $pumps;
+        $fule_prices= [];
+        foreach($pumps as $index=>$pump){
+            $fule_prices[$index]=[
+                'pump' => $pump,
+                'prices'=> MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                'dates'=> MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+            ];
+            // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
+        }
+        if(count($fule_prices) > 0){
+        return response()->json([
+            "status" => 200,
+            "data"=> $fule_prices
+        ]);
+        }
+        else{
+            return response()->json([
+                "status" => 404,
+                "message"=> "not found any data"
+            ]);
+        }
+
+
+    }
+
     public function fuel_types_api(){
         $fuel_types = Grade::all();
         if(count($fuel_types) > 0){

@@ -44,20 +44,54 @@ class ApiController extends Controller
 
     public function motorist_data_prices(Request $request){
 
+        // $motor = Grade::orderBy('created_at' , 'desc')->first();
+        // $data = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get()->makeHidden(['unique_group_id']);
+        // if($motor){
+        //     return response()->json([
+        //         'status'=> '200',
+        //         'data' => $data
+        //     ]);
+        // }
+        // else{
+        //     return response()->json([
+        //         'status'=> '404',
+        //         'message' => 'no data found'
+        //     ]);
+        // }
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('get', 'http://192.168.18.101:5000/motorist');
+
+        $response = json_decode($response->getBody()->getContents());
+        $code = uniqid();
         $motor = Grade::orderBy('created_at' , 'desc')->first();
-        $data = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get()->makeHidden(['unique_group_id']);
-        if($motor){
-            return response()->json([
-                'status'=> '200',
-                'data' => $data
+        $grade = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
+        dd($grade);
+        $count = 0;
+        foreach($response->fuel_prices as $key=>$fuelprice){
+            $grade =   Grade::create([
+                'grade' => $fuelprice->grade,
+                'unique_group_id'=>$code,
             ]);
-        }
-        else{
-            return response()->json([
-                'status'=> '404',
-                'message' => 'no data found'
-            ]);
-        }
+
+            foreach($fuelprice->pump_price as $pump_price){
+        
+                MotoristFuelPrice::create([
+                    'grade_id'=>$grade->id,
+                    'pump'=>$pump_price->pump,
+                    'price'=>(float)$pump_price->price,
+                    'change_in_price' => (float)$pump_price->price - $price[$count],
+                    'currency'=>$pump_price->currency
+                ]);            
+
+            }
+         
+           
+            $count = $count + 1;
+        } 
+
+
+        return "ok";
 
     }
 

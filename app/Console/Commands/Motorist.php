@@ -30,35 +30,59 @@ class Motorist extends Command
     public function handle()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.101:5000/motorist');
+        $response = $client->request('get', 'http://128.199.227.15:5000/motorist');
 
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
-        $motor = MotoristFuelPrice::orderBy('created_at' , 'desc')->first();
+        $motor = MotoristFuelPrice::orderBy('id' , 'desc')->first();
         // $grade = MotoristFuelPrice::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
         // dd($grade);
         // $count = 0;
-        foreach($response->fuel_prices as $key=>$fuelprice){
-            $grade = Grade::where('grade',$fuelprice->grade)->latest()->first();
-            // $grade =   Grade::create([
-            //     'grade' => $fuelprice->grade,
-            //     'unique_group_id'=>$code,
-            // ]);
+        if($motor){
+            foreach($response->fuel_prices as $key=>$fuelprice){
+                $grade = Grade::where('grade',$fuelprice->grade)->latest()->first();
+                // $grade =   Grade::create([
+                //     'grade' => $fuelprice->grade,
+                //     'unique_group_id'=>$code,
+                // ]);
 
-            foreach($fuelprice->pump_price as $pump_price){
-                
-                $motor = MotoristFuelPrice::where('grade_id' , $grade->id)->where('pump',$pump_price->pump)->orderBy('created_at','desc')->first();
-                MotoristFuelPrice::create([
-                    'grade_id'=>$grade->id,
-                    'pump'=>$pump_price->pump,
-                    'price'=>(float)$pump_price->price,
-                    'change_in_price' => (float)$pump_price->price - $motor->price,
-                    'currency'=>$pump_price->currency
-                ]);            
+                foreach($fuelprice->pump_price as $pump_price){
+
+                    $motor = MotoristFuelPrice::where('grade_id' , $grade->id)->where('pump',$pump_price->pump)->orderBy('created_at','desc')->first();
+                    MotoristFuelPrice::create([
+                        'grade_id'=>$grade->id,
+                        'pump'=>$pump_price->pump,
+                        'price'=>(float)$pump_price->price,
+                        'change_in_price' => (float)$pump_price->price - $motor->price,
+                        'currency'=>$pump_price->currency
+                    ]);
+
+                }
 
             }
-         
-        } 
+        }else{
+            foreach($response->fuel_prices as $key=>$fuelprice){
+                $grade = Grade::where('grade',$fuelprice->grade)->latest()->first();
+                // $grade =   Grade::create([
+                //     'grade' => $fuelprice->grade,
+                //     'unique_group_id'=>$code,
+                // ]);
+
+                foreach($fuelprice->pump_price as $pump_price){
+
+                    $motor = MotoristFuelPrice::where('grade_id' , $grade->id)->where('pump',$pump_price->pump)->orderBy('created_at','desc')->first();
+                    MotoristFuelPrice::create([
+                        'grade_id'=>$grade->id,
+                        'pump'=>$pump_price->pump,
+                        'price'=>(float)$pump_price->price,
+                        'change_in_price' => (float)0.0,
+                        'currency'=>$pump_price->currency
+                    ]);
+
+                }
+
+            }
+        }
 
 
         return Command::SUCCESS;

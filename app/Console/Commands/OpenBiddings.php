@@ -30,22 +30,38 @@ class OpenBiddings extends Command
     {
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.101:5000/coe_open_bidding');
+        $response = $client->request('get', 'http://128.199.227.15:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
-        // $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
-        foreach($response->oneminitoring as $fuelprice){
-            OpenBidding::create([
-                'unique_group_id'=>$code,
-                'grade'=>$fuelprice->category->grade,
-                'title'=>$fuelprice->category->title,
-                'qouta'=>$fuelprice->qouta,
-                'qouta_price' => $fuelprice->qouta_price,
-                'qouta_price_currency' => $fuelprice->qouta_price_currency,
-                'recieved' => $fuelprice->recieved,
-                // 'change_in_price' =>$fuelprice->qouta_price - OpenBidding::where('unique_group_id' , $open_bidding->unique_group_id)->where('grade' ,$fuelprice->category->grade)->value('qouta_price'),
-            ]);            
+        $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();
+        if($open_bidding){
+            foreach($response->oneminitoring as $fuelprice){
+                OpenBidding::create([
+                    'unique_group_id'=>$code,
+                    'grade'=>$fuelprice->category->grade,
+                    'title'=>$fuelprice->category->title,
+                    'qouta'=>$fuelprice->qouta,
+                    'qouta_price' => $fuelprice->qouta_price,
+                    'qouta_price_currency' => $fuelprice->qouta_price_currency,
+                    'recieved' => $fuelprice->recieved,
+                    'change_in_price' =>(float)$fuelprice->qouta_price - OpenBidding::where('unique_group_id' , $open_bidding->unique_group_id)->where('grade' ,$fuelprice->category->grade)->value('qouta_price'),
+                ]);
             }
+        }else{
+            foreach($response->oneminitoring as $fuelprice){
+                OpenBidding::create([
+                    'unique_group_id'=>$code,
+                    'grade'=>$fuelprice->category->grade,
+                    'title'=>$fuelprice->category->title,
+                    'qouta'=>$fuelprice->qouta,
+                    'qouta_price' => $fuelprice->qouta_price,
+                    'qouta_price_currency' => $fuelprice->qouta_price_currency,
+                    'recieved' => $fuelprice->recieved,
+                    'change_in_price' =>0.0,
+                ]);
+            }
+        }
+
         return Command::SUCCESS;
     }
 }

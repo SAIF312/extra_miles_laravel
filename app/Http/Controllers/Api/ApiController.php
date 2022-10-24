@@ -44,54 +44,22 @@ class ApiController extends Controller
 
     public function motorist_data_prices(Request $request){
 
-        // $motor = Grade::orderBy('created_at' , 'desc')->first();
-        // $data = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get()->makeHidden(['unique_group_id']);
-        // if($motor){
-        //     return response()->json([
-        //         'status'=> '200',
-        //         'data' => $data
-        //     ]);
-        // }
-        // else{
-        //     return response()->json([
-        //         'status'=> '404',
-        //         'message' => 'no data found'
-        //     ]);
-        // }
-
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.101:5000/motorist');
-
-        $response = json_decode($response->getBody()->getContents());
-        $code = uniqid();
         $motor = Grade::orderBy('created_at' , 'desc')->first();
-        $grade = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
-        dd($grade);
-        $count = 0;
-        foreach($response->fuel_prices as $key=>$fuelprice){
-            $grade =   Grade::create([
-                'grade' => $fuelprice->grade,
-                'unique_group_id'=>$code,
+        $data = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get()->makeHidden(['unique_group_id']);
+        // $motor = MotoristFuelPrice::orderBy('created_at' , 'desc')->first();
+        // $motorist = MotoristFuelPrice::where('unique_group_id' , $motor->unique_group_id)->with('grade')->get();
+        if($data){
+            return response()->json([
+                'status'=> '200',
+                'data' => $data
             ]);
-
-            foreach($fuelprice->pump_price as $pump_price){
-        
-                MotoristFuelPrice::create([
-                    'grade_id'=>$grade->id,
-                    'pump'=>$pump_price->pump,
-                    'price'=>(float)$pump_price->price,
-                    'change_in_price' => (float)$pump_price->price - $price[$count],
-                    'currency'=>$pump_price->currency
-                ]);            
-
-            }
-         
-           
-            $count = $count + 1;
-        } 
-
-
-        return "ok";
+        }
+        else{
+            return response()->json([
+                'status'=> '404',
+                'message' => 'no data found'
+            ]);
+        }
 
     }
 
@@ -133,7 +101,7 @@ class ApiController extends Controller
 
     public function traffic_images_api(){
 
-        
+
         $open_bidding = TraficImage::orderBy('created_at' , 'desc')->first();
         $data = TraficImage::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
         if($open_bidding){
@@ -152,7 +120,7 @@ class ApiController extends Controller
 
     public function car_parking_singapur(){
 
-        
+
         $client = new \GuzzleHttp\Client();
         $response = $client->request('get', 'http://192.168.18.101:5000/car_parking_singapur');
         $response = json_decode($response->getBody()->getContents());
@@ -175,25 +143,24 @@ class ApiController extends Controller
                 'message' => 'no data found'
             ]);
         }
-          
+
     }
 
-    public function price_graph(Request $request){
-        
-        $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->whereDate('created_at' , '<=' , Carbon::now()->addDays($request->days))->get();
-        if(count($fuel_price) > 0){
-        return response()->json([
-            "status" => 200,
-            "data"=> $fuel_price
-        ]);
-        }
-        else{
-            return response()->json([
-                "status" => 404,
-                "message"=> "not found any data"
-            ]);
-        }
 
+    public function motorist_grades(){
+        $grades = Grade::select('id','grade')->where('unique_group_id',Grade::orderBy('created_at' , 'desc')->value('unique_group_id'))->get();
+        if(count($grades) > 0){
+            return response()->json([
+                "status" => 200,
+                "grades"=> $grades
+            ]);
+            }
+            else{
+                return response()->json([
+                    "status" => 404,
+                    "message"=> "not found any data"
+                ]);
+            }
 
     }
 
@@ -201,12 +168,12 @@ class ApiController extends Controller
 
         $pumps = array_reverse(MotoristFuelPrice::latest()->limit(5)->pluck('pump')->toArray());
         // return $pumps;
-        $fule_prices= [];
+        $grade = Grade::where('id',$request->grade_id)->first();
         foreach($pumps as $index=>$pump){
             $fule_prices[$index]=[
                 'pump' => $pump,
-                'prices'=> MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
-                'dates'=> MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                'prices'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                'dates'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
             ];
             // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
         }
@@ -242,7 +209,7 @@ class ApiController extends Controller
         }
     }
 
-   
+
 }
 
 

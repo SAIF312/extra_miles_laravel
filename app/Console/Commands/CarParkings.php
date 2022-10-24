@@ -30,7 +30,7 @@ class CarParkings extends Command
     public function handle()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://128.199.227.15:5000/car_parking_singapur');
+        $response = $client->request('get', 'http://192.168.18.101:5000/car_parking_singapur');
 
         $response = json_decode($response->getBody()->getContents());
         if($response){

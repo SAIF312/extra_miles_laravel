@@ -30,7 +30,7 @@ class OpenBiddings extends Command
     {
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://128.199.227.15:5000/coe_open_bidding');
+        $response = $client->request('get', 'http://192.168.18.101:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
         $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();

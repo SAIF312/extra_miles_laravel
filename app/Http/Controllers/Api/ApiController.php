@@ -166,10 +166,11 @@ class ApiController extends Controller
 
     public function motorist_price_graph(Request $request){
 
-        $pumps = array_reverse(MotoristFuelPrice::latest()->limit(5)->pluck('pump')->toArray());
+        $pumps = array_reverse(MotoristFuelPrice::orderBy('id','desc')->limit(5)->pluck('pump')->toArray());
         // return $pumps;
         $grade = Grade::where('id',$request->grade_id)->first();
         foreach($pumps as $index=>$pump){
+
             $fule_prices[$index]=[
                 'pump' => $pump,
                 'prices'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
@@ -194,7 +195,7 @@ class ApiController extends Controller
     }
 
     public function fuel_types_api(){
-        $fuel_types = Grade::all();
+        $fuel_types = Grade::latest()->limit(5)->get();
         if(count($fuel_types) > 0){
         return response()->json([
             "status" => 200,

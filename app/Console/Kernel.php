@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('Motorist:cron')->daily();
         $schedule->command('OpenBiddings:cron')->daily();
         $schedule->command('TraficImages:cron')->everyThirtyMinutes();
-        $schedule->command('CarParking:cron')->daily();
+        $schedule->command('CarParking:cron')->weekly();
     }
 
     /**

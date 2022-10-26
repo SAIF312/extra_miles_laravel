@@ -83,7 +83,7 @@ class ApiController extends Controller
 
     public function malaysian_fuel_api(){
 
-        $open_bidding = MalysianFuelPrice::orderBy('created_at' , 'desc')->first();
+        $open_bidding = MalysianFuelPrice::orderBy('id' , 'desc')->first();
         $data = MalysianFuelPrice::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
         if($open_bidding){
             return response()->json([

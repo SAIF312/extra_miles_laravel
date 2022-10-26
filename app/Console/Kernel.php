@@ -15,11 +15,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('MalaysianFuelPrices:cron')->everyMinute();
-        $schedule->command('Motorist:cron')->everyMinute();
-        $schedule->command('OpenBiddings:cron')->everyMinute();
-        $schedule->command('TraficImages:cron')->everyMinute();
-        $schedule->command('CarParking:cron')->everyMinute();
+        $schedule->command('MalaysianFuelPrices:cron')->daily();
+        $schedule->command('Motorist:cron')->daily();
+        $schedule->command('OpenBiddings:cron')->daily();
+        $schedule->command('TraficImages:cron')->everyThirtyMinutes();
+        $schedule->command('CarParking:cron')->daily();
     }
 
     /**

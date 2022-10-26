@@ -103,7 +103,7 @@ class ApiController extends Controller
 
 
         $open_bidding = TraficImage::orderBy('created_at' , 'desc')->first();
-        $data = CheckPoint::with('trafic_images')->get();
+        $data = CheckPoint::with('trafic_images')->whereIn('title',['wtc1','wtc'])->get();
         // $data = TraficImage::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
         if($open_bidding){
             return response()->json([

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Models\{MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, Grade};
+use App\Models\{MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, CheckPoint, Grade};
 class ApiController extends Controller
 {
     public function motorist_data(Request $request){
@@ -103,7 +103,8 @@ class ApiController extends Controller
 
 
         $open_bidding = TraficImage::orderBy('created_at' , 'desc')->first();
-        $data = TraficImage::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
+        $data = CheckPoint::with('trafic_images')->get();
+        // $data = TraficImage::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
         if($open_bidding){
             return response()->json([
                 'status'=> '200',

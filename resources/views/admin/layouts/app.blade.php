@@ -191,7 +191,7 @@
 
                     <ul class="list-unstyled menu-categories" id="accordionExample">
 
-                        <li class="menu">
+                        <!-- <li class="menu">
                             <a href="{{-- route('dashboard') --}}"
                                 data-active="{{ Request::is(['dashboard', 'dashboard/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
@@ -199,80 +199,55 @@
                                     <span> <i class="fa fa-tachometer"></i>&nbsp;&nbsp;&nbsp;Dashboard</span>
                                 </div>
                             </a>
-                        </li>
+                        </li> -->
 
-                        {{-- <li class="menu">
-                            <a href="#app10" data-toggle="collapse" data-active="{{Request::is(['user/index','message/index']) ? 'true' : 'false'}}"
-                            aria-expanded="{{Request::is(['user/index','message/index']) ? 'true' : 'false'}}" class="{{Request::is(['user/index','message/index']) ? 'dropdown-toggle' : 'dropdown-toggle collapsed'}}">
-                                <div>
-                                    <span> <i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp;&nbsp;Setting</span>
-                                </div>
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                </div>
-                            </a>
-                            <ul class="collapse submenu list-unstyled {{Request::is(['user/index','message/index']) ? 'show' : ''}}" id="app10" data-parent="#accordionExample">
-                                <li class="{{Request::is(['user/index','user/index/*']) ? 'active' : ''}}"><a href="{{route('user.index')}}"> Users </a></li>
-                            </ul>
-                            <ul class="collapse submenu list-unstyled {{Request::is(['message/index']) ? 'show' : ''}}" id="app10" data-parent="#accordionExample">
-                                <li class="{{Request::is(['message/index','message/index/*']) ? 'active' : ''}}"><a href="{{route('message.index')}}"> Messages </a></li>
-                            </ul>
-                        </li> --}}
-
+          
                         <li class="menu">
-                            <a href="{{-- route('user.index') --}}"
+                            <a href="{{route('motorist.price')}}"
                                 data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Users</span>
+                                    <span> <i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Motorist Fuel Prices</span>
                                 </div>
                             </a>
                         </li>
 
-                        {{-- <li class="menu">
-                            <a href="{{ route('user.index') }}"
-                                data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
-                                aria-expanded="false" class="dropdown-toggle">
-                                <div>
-                                    <span> <i class="fa fa-user-circle"></i>&nbsp;&nbsp;&nbsp;Admin</span>
-                                </div>
-                            </a>
-                        </li> --}}
+           
                         <li class="menu">
-                            <a href="{{-- route('package.index') --}}"
+                            <a href="{{ route('malaysian.price') }}"
                                 data-active="{{ Request::is(['package', 'package/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-adjust"></i>&nbsp;&nbsp;&nbsp;Packages</span>
+                                    <span> <i class="fa fa-adjust"></i>&nbsp;&nbsp;&nbsp;Malaysian Fuel Prices</span>
                                 </div>
                             </a>
                         </li>
 
                         <li class="menu">
-                            <a href="{{-- route('subscription.index') --}}"
+                            <a href="{{route('openbidding.price') }}"
                                 data-active="{{ Request::is(['subscription', 'subscription/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-window-restore"></i>&nbsp;&nbsp;&nbsp;Subscriptions</span>
+                                    <span> <i class="fa fa-window-restore"></i>&nbsp;&nbsp;&nbsp;Open Bidding</span>
                                 </div>
                             </a>
                         </li>
 
                         <li class="menu">
-                            <a href="{{-- route('payments.index') --}}"
+                            <a href="{{ route('Trafic_images.price') }}"
                                 data-active="{{ Request::is(['payments', 'payments/*']) ? 'true' : 'false' }}" aria-expanded="false"
                                 class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-shopping-bag"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Payments</span>
+                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Trafic Images</span>
                                 </div>
                             </a>
                         </li>
 
                         <li class="menu">
-                            <a href="{{--route('scan.index')--}}" data-active="{{Request::is(['scan','scan/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
+                            <a href="{{ route('carparking.price') }}" data-active="{{Request::is(['scan','scan/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-qrcode"></i>&nbsp;&nbsp;&nbsp;DNC Crawler stats</span>
+                                    <span> <i class="fa fa-qrcode"></i>&nbsp;&nbsp;&nbsp;Car Parking Rates</span>
                                 </div>
                             </a>
                         </li>

@@ -41,22 +41,29 @@ class Motorist extends Command
         $flag = "false";
 
         if($motor){
-            $count = 1;
+            // $count = 1;
             foreach($response->fuel_prices as $key=>$fuelprice){
                 $grade_old = Grade::where('grade',$fuelprice->grade)->where('price_change_flag','true')->latest()->first();
-
 
                 foreach($fuelprice->pump_price as $pump_price){
 
                     $motor = MotoristFuelPrice::where('grade_id' , $grade_old->id)->where('price_change_flag','true')->where('pump','like',$pump_price->pump)->orderBy('created_at','desc')->first();
-                    $change = (float)$pump_price->price - $motor->price;
-                    if($count = 1){
-                        // dd($change);
-                    }
+                    $change =  number_format((float)$pump_price->price, 2) - number_format((float)$motor->price, 2);
+                    // if($count = 1){
+                    //     // dd($change);
+                    // }
+                    // dd((float)$pump_price->price);
+
                     if($change != 0.0){
-                        $flag = 'true';
+                        // dump((float)$pump_price->price);
+                        // dump((float)$motor->price);
+
+                        // dd((float)$change);
+
+
+                        $flag = "true";
                     }
-                    $count = $count + 1;
+                    // $count = $count + 1;
 
                 }
             }

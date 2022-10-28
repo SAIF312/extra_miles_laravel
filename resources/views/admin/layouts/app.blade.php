@@ -120,7 +120,7 @@
                                         </svg> My Profile</a>
                                 </div>
                                 <div class="dropdown-item">
-                                    <form id="logout" action="{{-- route('logout') --}}" method="post">
+                                    <form id="logout" action="{{route('logout')}}" method="post">
                                         {{ csrf_field() }}
                                         <a href="javascript:{}" onclick="document.getElementById('logout').submit();">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -207,7 +207,7 @@
                                 data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Motorist Fuel Prices</span>
+                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Motorist Fuel Prices</span>
                                 </div>
                             </a>
                         </li>
@@ -218,7 +218,7 @@
                                 data-active="{{ Request::is(['package', 'package/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-adjust"></i>&nbsp;&nbsp;&nbsp;Malaysian Fuel Prices</span>
+                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Malaysian Fuel Prices</span>
                                 </div>
                             </a>
                         </li>
@@ -228,7 +228,7 @@
                                 data-active="{{ Request::is(['subscription', 'subscription/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-window-restore"></i>&nbsp;&nbsp;&nbsp;Open Bidding</span>
+                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Open Bidding</span>
                                 </div>
                             </a>
                         </li>
@@ -238,7 +238,7 @@
                                 data-active="{{ Request::is(['payments', 'payments/*']) ? 'true' : 'false' }}" aria-expanded="false"
                                 class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-shopping-bag"
+                                    <span> <i class="fa fa-globe"
                                             aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Trafic Images</span>
                                 </div>
                             </a>
@@ -247,7 +247,7 @@
                         <li class="menu">
                             <a href="{{ route('carparking.price') }}" data-active="{{Request::is(['scan','scan/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-qrcode"></i>&nbsp;&nbsp;&nbsp;Car Parking Rates</span>
+                                    <span> <i class="fa fa-car"></i>&nbsp;&nbsp;&nbsp;Car Parking Rates</span>
                                 </div>
                             </a>
                         </li>

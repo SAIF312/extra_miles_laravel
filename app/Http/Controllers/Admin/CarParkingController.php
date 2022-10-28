@@ -10,8 +10,8 @@ use Yajra\DataTables\Facades\DataTables;
 class CarParkingController extends Controller
 {
     public function index(){
-       
-        return view('admin.carParking.index');
+
+        return view('admin.carparking.index');
     }
 
     public function index_data_table(){
@@ -20,18 +20,18 @@ class CarParkingController extends Controller
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
-                    
+
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('location', function ($unique_groups) {
-                    
+
                     return '<a target="_blank" href="http://maps.google.com/?q='.$unique_groups->latitude.','.$unique_groups->longitude.'"><span class="btn badge badge-success">Location</span></a>';
                 })
 
-                
 
 
-                
+
+
 
                 ->editColumn('actions', function ($unique_groups) {
                     return "<div class='btn-group-sm'>
@@ -44,8 +44,8 @@ class CarParkingController extends Controller
                 ->toJson();
         }
         return view('admin.carParking.index');
-        
-    } 
+
+    }
 
 
 

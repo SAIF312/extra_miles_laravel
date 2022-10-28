@@ -38,31 +38,51 @@ class Motorist extends Command
         // $grade = MotoristFuelPrice::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
         // dd($grade);
         // $count = 0;
+        $flag = "false";
+
         if($motor){
+            $count = 1;
+            foreach($response->fuel_prices as $key=>$fuelprice){
+                $grade_old = Grade::where('grade',$fuelprice->grade)->where('price_change_flag','true')->latest()->first();
+
+
+                foreach($fuelprice->pump_price as $pump_price){
+
+                    $motor = MotoristFuelPrice::where('grade_id' , $grade_old->id)->where('price_change_flag','true')->where('pump','like',$pump_price->pump)->orderBy('created_at','desc')->first();
+                    $change = (float)$pump_price->price - $motor->price;
+                    if($count = 1){
+                        // dd($change);
+                    }
+                    if($change != 0.0){
+                        $flag = 'true';
+                    }
+                    $count = $count + 1;
+
+                }
+            }
             foreach($response->fuel_prices as $key=>$fuelprice){
                 $grade_old = Grade::where('grade',$fuelprice->grade)->latest()->first();
                 $grade_new =   Grade::create([
                     'grade' => $fuelprice->grade,
                     'unique_group_id'=>$code,
+                    'price_change_flag'=>$flag
                 ]);
 
                 foreach($fuelprice->pump_price as $pump_price){
 
                     $motor = MotoristFuelPrice::where('grade_id' , $grade_old->id)->where('pump','like',$pump_price->pump)->orderBy('created_at','desc')->first();
-                    // dump($pump_price->pump);
-                    // dump($grade_old->grade);
-                    // dd($motor);
+
                     MotoristFuelPrice::create([
                         'grade_id'=>$grade_new->id,
                         'grade'=>$fuelprice->grade,
                         'pump'=>$pump_price->pump,
                         'price'=>(float)$pump_price->price,
+                        'price_change_flag'=>$flag,
                         'change_in_price' => (float)$pump_price->price - $motor->price,
                         'currency'=>$pump_price->currency
                     ]);
 
                 }
-
             }
         }else{
             foreach($response->fuel_prices as $key=>$fuelprice){
@@ -70,6 +90,7 @@ class Motorist extends Command
                 $grade =   Grade::create([
                     'grade' => $fuelprice->grade,
                     'unique_group_id'=>$code,
+                    'price_change_flag'=>'true'
                 ]);
 
                 foreach($fuelprice->pump_price as $pump_price){
@@ -81,6 +102,7 @@ class Motorist extends Command
                         'pump'=>$pump_price->pump,
                         'price'=>(float)$pump_price->price,
                         'change_in_price' => (float)0.0,
+                        'price_change_flag'=>'true',
                         'currency'=>$pump_price->currency
                     ]);
 

@@ -169,7 +169,7 @@ class ApiController extends Controller
 
         $pumps = array_reverse(MotoristFuelPrice::orderBy('id','desc')->limit(5)->pluck('pump')->toArray());
         // return $pumps;
-        $grade = Grade::where('id',$request->grade_id)->first();
+        $grade = Grade::where('grade',$request->grade)->first();
         foreach($pumps as $index=>$pump){
 
             $fule_prices[$index]=[

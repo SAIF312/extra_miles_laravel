@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{DashboardController, MotoristController, MalaysianController, OpenbiddingController, TraficImageController, CarParkingController};
+use App\Http\Controllers\Admin\{DashboardController, MotoristController, MalaysianController, OpenbiddingController, TraficImageController, CarParkingController, ProfileController};
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +48,15 @@ Route::get('/parking/index',[CarParkingController::class, 'index_data_table'])->
 
 Route::get('carparking/modal/{id}',[CarParkingController::class, 'Modal'])->name('carparking.modal');
 
+Route::prefix('profile')->as('profile.')->controller(ProfileController::class)->group(function() {
+    Route:: get('index', 'index')->name('index');
+    Route:: post('store', 'store')->name('store');
+    Route:: post('status', 'status')->name('status');
+    Route:: get('delete/{id}', 'destroy')->name('delete');
+    Route:: post('modal', 'modal')->name('modal');
+    Route:: post('update', 'update')->name('update');
+    Route:: post('updatePassword', 'updatePassword')->name('updatePassword');
+});
 
 
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section ('title')
     Customers
@@ -11,7 +11,6 @@
 
 @section('content')
 
-@include('sweetalert::alert')
 
 <!--  BEGIN CONTENT AREA  -->
 <div id="content" class="main-content">
@@ -30,7 +29,7 @@
                         </div>
                         <div class="text-center user-info">
                         <img src="{{asset(!is_null(auth()->user()->profile_img_url)?auth()->user()->profile_img_url:'assets/assets/img/profile.jpg')}}" alt="avatar" style="border-radius: 50%; height:150px; width:150px; padding:1px; background-color:black;">
-                            <p class="" style="font-size:30px;">{{auth()->user()->f_name.' '.auth()->user()->l_name}}</p>
+                            <p class="" style="font-size:30px;">{{auth()->user()->name}}</p>
                         </div>
                         <div class="user-info-list">
 
@@ -50,7 +49,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>{{auth()->user()->contact}}
                                     </li> --}}
 
-                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#password" style="margin-top:20px;">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#password" style="margin-top:20px;">
                                         Change Account Password
                                     </button>
 
@@ -91,20 +90,20 @@
 
                     <form action="{{route('profile.update')}}" method="POST"  enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>{{ __('Forename') }}</label>
                             <input id="forename" type="text" class="form-control" name="f_name" value="{{auth()->user()->f_name}}">
                             <input type="hidden" id="id" class="form-control" name="id" value="{{auth()->id()}}">
-                        </div>
+                        </div> -->
                         <div class="form-group">
-                            <label>{{ __('Surname') }}</label>
-                            <input id="surname" type="text" class="form-control" name="l_name" value="{{auth()->user()->l_name}}">
+                            <label>{{ __('Name') }}</label>
+                            <input id="surname" type="text" class="form-control" name="name" value="{{auth()->user()->name}}">
 
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>{{ __('E-Mail Address') }}</label>
                                 <input id="email" type="text" class="form-control" name="email" value="{{auth()->user()->email}}">
-                        </div>
+                        </div> -->
 
                       <div class="form-group">
                             <label>{{ __('Image') }}</label>
@@ -112,7 +111,7 @@
                         </div>
                         <div class="form-group">
                             <label></label>
-                            <button type="submit"   class="btn btn-dark  btn-block" value="Update">Update</button>
+                            <button type="submit"   class="btn btn-primary  btn-block" value="Update">Update</button>
                         </div>
                     </form>
 
@@ -131,11 +130,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Password Update</h5>
-        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
       </div>
       <div class="modal-body">
 
-      <form action="{{route('user.updatePassword')}}" method="POST">
+      <form action="{{route('profile.updatePassword')}}" method="POST">
       {{csrf_field()}}
       <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Current Password</label>
@@ -151,7 +150,7 @@
     <input type="password" class="form-control" name="password_confirmation" id="exampleInputPassword1">
   </div>
   <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-  <button type="submit"   class="btn btn-dark" value="Update">Change Password</button>
+  <button type="submit"   class="btn btn-primary" value="Update">Change Password</button>
 
 </form>
 

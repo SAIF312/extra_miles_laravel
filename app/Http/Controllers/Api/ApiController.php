@@ -24,6 +24,25 @@ class ApiController extends Controller
         $response = json_decode($response->getBody()->getContents());
         return $response;
     }
+
+    public function Open_bidding_parent(Request $request){
+
+        $open_bidding_parent = OpenBiddingParent::all();
+        if(count($open_bidding_parent) > 0){
+            return response()->json([
+                "status" => 200,
+                "data"=> $open_bidding_parent
+            ]);
+            }
+        else{
+            return response()->json([
+                "status" => 404,
+                "message"=> "not found any data"
+            ]);
+        }
+    
+    }
+    
     public function malaysian_fuel_prices(Request $request){
 
         $client = new \GuzzleHttp\Client();

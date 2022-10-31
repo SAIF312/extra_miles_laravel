@@ -212,14 +212,14 @@ class ApiController extends Controller
     }
 
     public function malaysian_price_graph(Request $request){
-
-        $unique =  MalysianFuelPrice::latest()->value('unique_group_id');
+        $days = 360;
+        $unique =  MalysianFuelPrice::latest()->value('unique_group_id');   $days = 360;
         $fule_prices = MalysianFuelPrice::where('unique_group_id', $unique)->whereIn('title' , ['RON 95','RON 97','EURO 5 B10'])->get()->makeHidden(['unique_group_id','type','price_change_flag']);
         foreach($fule_prices as $index=>$fule_price){
         $fule_prices[$index]=[
             'title' => $fule_price->title,
-            'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
-            'dates'=>  MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+            'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('price')->toArray(),
+            'dates'=>  MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('created_at')->toArray(),
                     ];
                 }
         if(count($fule_prices) > 0){

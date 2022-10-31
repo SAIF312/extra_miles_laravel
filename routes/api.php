@@ -39,7 +39,7 @@ Route::get('car_parking_singapur_api',[ApiController::class,'car_parking_singapu
 Route::get('fuel_types',[ApiController::class,'fuel_types_api']);
 Route::get('grades',[ApiController::class,'motorist_grades']);
 Route::post('motorist_price_graph',[ApiController::class,'motorist_price_graph']);
-Route::post('malaysian_price_graph',[ApiController::class,'malaysian_price_graph']);
+Route::get('malaysian_price_graph',[ApiController::class,'malaysian_price_graph']);
 
 
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Models\{MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, CheckPoint, Grade};
+use App\Models\{MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, CheckPoint, Grade, OpenBiddingParent};
 class ApiController extends Controller
 {
     public function motorist_data(Request $request){
@@ -63,11 +63,11 @@ class ApiController extends Controller
 
     }
 
-    public function open_biddings(){
-
-        $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
-        $data = OpenBidding::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
-        if($open_bidding){
+    public function open_biddings(Request $request){
+        $parent = OpenBiddingParent::where('year', $request->year)->where('month', $request->month)->where('bidding_number' , $request->bidding_number)->first();
+        // $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
+        $data = OpenBidding::where('parent_id', $parent->id)->get()->makeHidden(['unique_group_id','parent_id']);
+        if($parent){
             return response()->json([
                 'status'=> '200',
                 'data' => $data
@@ -218,8 +218,8 @@ class ApiController extends Controller
         foreach($fule_prices as $index=>$fule_price){
         $fule_prices[$index]=[
             'title' => $fule_price->title,
-            'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('price')->toArray(),
-            'dates'=>  MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('created_at')->toArray(),
+            'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+            'dates'=>  MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
                     ];
                 }
         if(count($fule_prices) > 0){

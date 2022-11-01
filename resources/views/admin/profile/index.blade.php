@@ -11,6 +11,7 @@
 
 @section('content')
 
+@include('sweetalert::alert')
 
 <!--  BEGIN CONTENT AREA  -->
 <div id="content" class="main-content">

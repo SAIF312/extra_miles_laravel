@@ -9,4 +9,8 @@ class OpenBiddingParent extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function children(){
+        return $this->belongsTo(OpenBidding::class, 'id' , 'parent_id');
+    }
 }

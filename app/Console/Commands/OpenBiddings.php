@@ -33,28 +33,42 @@ class OpenBiddings extends Command
         $response = $client->request('get', 'http://128.199.227.15:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
-        $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();
-        $data = OpenBiddingParent::create([
-            'year'=>$response->year,
-            'month'=>$response->month,
-            'bidding_number'=>$response->bidding_number,
-            'end_date' => $response->end_date,
-            ]);
-        if($open_bidding){
-            foreach($response->oneminitoring as $fuelprice){
-                OpenBidding::create([
-                    'unique_group_id'=>$code,
-                    'parent_id' => $data->id,
-                    'grade'=>$fuelprice->category->grade,
-                    'title'=>$fuelprice->category->title,
-                    'qouta'=>$fuelprice->qouta,
-                    'qouta_price' => $fuelprice->qouta_price,
-                    'qouta_price_currency' => $fuelprice->qouta_price_currency,
-                    'recieved' => $fuelprice->recieved,
-                    'change_in_price' =>(float)$fuelprice->qouta_price - OpenBidding::where('unique_group_id' , $open_bidding->unique_group_id)->where('grade' ,$fuelprice->category->grade)->value('qouta_price'),
-                ]);
+        // $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();
+        $exist = OpenBiddingParent::latest()->first();
+
+        // dd($exist);
+       
+        if($exist){
+            if($exist->end_date != $response->end_date && $exist->bidding_number != $response->bidding_number && $exist->year != $response->year && $exist->month != $response->month)
+            {
+                $data = OpenBiddingParent::create([
+                    'month'=>$response->month,
+                    'bidding_number'=>$response->bidding_number,
+                    'end_date' => $response->end_date,
+                    'year'=>$response->year,
+                    ]);
+                foreach($response->oneminitoring as $fuelprice){
+                    OpenBidding::create([
+                        'unique_group_id'=>$code,
+                        'parent_id' => $data->id,
+                        'grade'=>$fuelprice->category->grade,
+                        'title'=>$fuelprice->category->title,
+                        'qouta'=>$fuelprice->qouta,
+                        'qouta_price' => $fuelprice->qouta_price,
+                        'qouta_price_currency' => $fuelprice->qouta_price_currency,
+                        'recieved' => $fuelprice->recieved,
+                        'change_in_price' =>(float)$fuelprice->qouta_price - OpenBidding::where('unique_group_id' , $open_bidding->unique_group_id)->where('grade' ,$fuelprice->category->grade)->value('qouta_price'),
+                    ]);
+                }
             }
+          
         }else{
+            $data = OpenBiddingParent::create([
+                'month'=>$response->month,
+                'bidding_number'=>$response->bidding_number,
+                'end_date' => $response->end_date,
+                'year'=>$response->year,
+                ]);
             foreach($response->oneminitoring as $fuelprice){
                 OpenBidding::create([
                     'unique_group_id'=>$code,

@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('OpenBiddings:cron') 
         ->timezone('UTC +8')
         ->at('16:00');
-        $schedule->command('TraficImages:cron')->everyThirtyMinutes();
+        $schedule->command('TraficImages:cron')->everyFifteenMinutes();
         $schedule->command('CarParking:cron')->weekly();
     }
 

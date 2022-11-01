@@ -45,13 +45,16 @@
                                 <thead>
                                     <tr>
                                         <th>SNO</th>
+                                        <th>Last Pull</th>
                                         <th>Grade</th>
                                         <th>Title</th>
                                         <th>Qouta</th>
                                         <th>Qouta Price</th>
                                         <th>Recieved</th>
                                         <th>Chnage price</th>
-                                        <th>Date</th>
+                                        <th>Bidding Month</th>
+                                        <th>Bidding number</th>
+                                        <th>End Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -222,13 +225,16 @@ function Delete(id) {
                 ajax: "{{ route('openbidding.index') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    { data: 'created_at', name: 'created_at' },
                     { data: 'grade', name: 'grade' },
                     { data: 'title', name: 'title' },
                     { data: 'qouta', name: 'qouta' },
                     { data: 'qouta_price', name: 'qouta_price' },
                     { data: 'recieved', name: 'recieved' },
                     { data: 'change_in_price', name: 'change_in_price' },
-                    { data: 'created_at', name: 'created_at' },
+                    { data: 'month', name: 'month' },
+                    { data: 'bidding_number', name: 'bidding_number' },
+                    { data: 'end_date', name: 'end_date' },
                     { data: 'actions', name: 'actions' }
                 ],
                 "oLanguage": {

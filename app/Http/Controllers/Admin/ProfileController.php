@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-// use Alert;
+use Hash;
+Use Alert;
+
 
 
 class ProfileController extends Controller
@@ -18,31 +20,26 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $run = '';
-
+        // dd($request->all());
         if(isset($request->name)){
             $run = auth()->user();
             auth()->user()->update(['name'=>$request->name]);
         }
-        // if(isset($request->l_name)){
-        //     $run = auth()->user();
-        //     auth()->user()->update(['l_name'=>$request->l_name]);
-        // }
-        // auth()->user()->update(['name'=>auth()->user()->f_name.' '.auth()->user()->l_name]);
-        // if(isset($request->email)){
-        //     $run = auth()->user();
-        //     auth()->user()->update(['email'=>$request->email]);
-        // }
         if($request->hasFile('image')){
+            $old_image = auth()->user()->profile_img_url;
+           
             $file      = $request->file('image');
+            // $file_path = Storage::put('public/uploads', $file);
             $file_path = $request->file('image')->store('public/uploads');
             $file_path = Storage::url($file_path);
             $flag = auth()->user()->update(['profile_img_url' => $file_path]);
           
             // Alert::success('Success', 'Profile Successfully Updated');
-            return redirect()->back();
+            // return redirect()->back();
+            if($old_image != null && $flag){
+                if(file_exists(public_path().$old_image)) unlink(public_path().$old_image);
+            }
         }
-
-
         if($run){
             // Alert::success('Success', 'Profile Successfully Updated');
             return redirect()->back();
@@ -50,6 +47,33 @@ class ProfileController extends Controller
         }
         else{
             // Alert::info('info', 'Nothing to update');
+            return redirect()->back();
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $run = '';
+
+        $request->validate([
+            'old_password'=>'required|min:8',
+            'new_password'=>'required|min:8',
+            'password_confirmation'=>'required|same:new_password|min:8'
+        ]);
+        if(Hash::check( $request->old_password,  auth()->user()->password)){
+            $run = auth()->user()->update(['password'=> Hash::make($request->new_password)]);
+        }
+        else{
+            Alert::error('Wrong info', 'Old password mismatch');
+            return redirect()->back();
+        }
+        if($run){
+            Alert::success('Success', 'Profile Successfully Updated');
+            return redirect()->back();
+
+        }
+        else{
+            Alert::info('info', 'Nothing to update');
             return redirect()->back();
         }
     }

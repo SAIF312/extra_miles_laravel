@@ -255,7 +255,7 @@ function Delete(id) {
     <script type="text/javascript">
          $(function() {
 
-            table = $('#default-ordering').DataTable( {
+           table = $('#default-ordering').DataTable( {
 
                 ajax: "{{ route('carparking.index') }}",
                 columns: [
@@ -286,10 +286,11 @@ function Delete(id) {
 function CarParkingModal(id){
     $("#CarParkingModal").modal('show');
     // alert(id);
-    if(table){
-        table.destroy();
+
+    if ( $.fn.DataTable.isDataTable( '#default-ordering_days' ) ) {
+        table1.destroy();
     }
-    table = $('#default-ordering_days').DataTable( {
+    table1 = $('#default-ordering_days').DataTable( {
 
             ajax: '{{ url("admin/carparking/modal")}}/'+id,
             columns: [

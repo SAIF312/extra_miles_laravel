@@ -58,7 +58,7 @@ class CarParkingController extends Controller
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('actions', function ($unique_group) {
-                    return view('admin.carParking.action',compact('unique_group'));
+                    return view('admin.carparking.action',compact('unique_group'));
                 })
                 ->rawColumns(['actions'])
                 ->toJson();
@@ -71,7 +71,7 @@ class CarParkingController extends Controller
     public function edit($id){
         $parking_price = CarParkingDaysPrice::where('id',$id)->with('car_parking')->first();
         // dd($parking_price);
-        return view('admin.carParking.update',compact('parking_price'));
+        return view('admin.carparking.update',compact('parking_price'));
     }
 
     public function update(Request $request){

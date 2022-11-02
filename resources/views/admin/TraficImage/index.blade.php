@@ -49,7 +49,7 @@
                                         <th>Title</th>
                                         <th>Date</th>
                                         <th>Image</th>
-                                        <th>Action</th>
+                                        {{-- <th>Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -223,7 +223,7 @@ function Delete(id) {
                     { data: 'title', name: 'title' },
                     { data: 'date', name: 'date' },
                     { data: 'image', name: 'image' },
-                    { data: 'actions', name: 'actions' }
+                    // { data: 'actions', name: 'actions' }
                 ],
                 "oLanguage": {
                     "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },

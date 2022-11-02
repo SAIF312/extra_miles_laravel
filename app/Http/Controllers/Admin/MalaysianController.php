@@ -32,18 +32,26 @@ class MalaysianController extends Controller
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('actions', function ($unique_groups) {
-                    return "<div class='btn-group-sm'>
-                       <!-- <a onclick='StatusUpdate($unique_groups->id)' class='btn btn-warning'><i class='fa fa-ban'></i></a> -->
-                        <a onclick='UserModal($unique_groups->id)' class='btn btn-success'><i class='fa fa-edit'></i></a> 
-                        <!-- <a onClick='UserDelete($unique_groups)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
-
-
-                            </div>";
+                    return view('admin.malaysian.action',compact('unique_groups'));
                 })
                 ->rawColumns(['actions','status'])
                 ->toJson();
         }
         return view('admin.malaysian.index');
         
+    }
+
+    public function edit($id){
+        $malaysian = MalysianFuelPrice::where('id',$id)->first();
+        return view('admin.malaysian.update',compact('malaysian'));
+    }
+
+    public function update(Request $request){
+        $malaysian = MalysianFuelPrice::where('id',$request->id)->first();
+        if($malaysian->price != $request->price){
+            $malaysian->update(['price'=>$request->price]);
+        }
+        
+        return redirect()->route('malaysian.price');
     }
 }

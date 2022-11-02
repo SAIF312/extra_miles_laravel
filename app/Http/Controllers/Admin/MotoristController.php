@@ -15,7 +15,6 @@ class MotoristController extends Controller
 
         return view('admin.motorist.index');
     }
-
     public function index_data_table(){
         $unique_groups = MotoristFuelPrice::all();
         //  $unique_groups = Grade::where('unique_group_id' , $grade)->with('motorist_fuel_prices')->get();
@@ -41,18 +40,25 @@ class MotoristController extends Controller
                    
                 })
                 ->editColumn('actions', function ($unique_groups) {
-                    return "<div class='btn-group-sm'>
-                       <!-- <a onclick='StatusUpdate($unique_groups->id)' class='btn btn-warning'><i class='fa fa-ban'></i></a> -->
-                        <a onclick='UserModal($unique_groups->id)' class='btn btn-success'><i class='fa fa-edit'></i></a>
-                       <!-- <a onClick='UserDelete($unique_groups)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
-
-
-                            </div>";
+                    return view('admin.motorist.action',compact('unique_groups'));
                 })
                 ->rawColumns(['actions','pump','status'])
                 ->toJson();
         }
         return view('admin.motorist.index');
         
+    }
+
+    public function edit($id){
+        $motorist = MotoristFuelPrice::where('id',$id)->first();
+        return view('admin.motorist.update',compact('motorist'));
+    }
+
+    public function update(Request $request){
+        $motorist = MotoristFuelPrice::where('id',$request->id)->first();
+        if($motorist->price != $request->price){
+            $motorist->update(['price'=>$request->price]);
+        }
+        return redirect()->route('motorist.price');
     }
 }

@@ -29,8 +29,12 @@ Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dash
 Route::get('/motorist/price',[MotoristController::class, 'index'])->name('motorist.price');
 
 Route::get('/motorist/index',[MotoristController::class, 'index_data_table'])->name('motorist.index');
+Route::get('/motorist/edit/{id}',[MotoristController::class, 'edit'])->name('motorist.edit');
+Route::post('/motorist/update',[MotoristController::class, 'update'])->name('motorist.update');
 
 Route::get('/malaysian/price',[MalaysianController::class, 'index'])->name('malaysian.price');
+Route::get('/malaysian/edit/{id}',[MalaysianController::class, 'edit'])->name('malaysian.edit');
+Route::post('/malaysian/update',[MalaysianController::class, 'update'])->name('malaysian.update');
 
 Route::get('/malaysian/index',[MalaysianController::class, 'index_data_table'])->name('malaysian.index');
 

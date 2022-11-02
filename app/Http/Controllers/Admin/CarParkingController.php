@@ -71,4 +71,17 @@ class CarParkingController extends Controller
 
 
     }
+
+    public function edit($id){
+        $motorist = MotoristFuelPrice::where('id',$id)->first();
+        return view('admin.motorist.update',compact('motorist'));
+    }
+
+    public function update(Request $request){
+        $motorist = MotoristFuelPrice::where('id',$request->id)->first();
+        if($motorist->price != $request->price){
+            $motorist->update(['price'=>$request->price]);
+        }
+        return redirect()->route('motorist.price');
+    }
 }

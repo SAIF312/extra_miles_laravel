@@ -85,8 +85,9 @@ class ApiController extends Controller
     public function open_biddings(Request $request){
         $parent = OpenBiddingParent::where('year', $request->year)->where('month', $request->month)->where('bidding_number' , $request->bidding_number)->first();
         // $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
-        $data = OpenBidding::where('parent_id', $parent->id)->get()->makeHidden(['unique_group_id','parent_id']);
+        
         if($parent){
+            $data = OpenBidding::where('parent_id', $parent->id)->get()->makeHidden(['unique_group_id','parent_id']);
             return response()->json([
                 'status'=> '200',
                 'data' => $data

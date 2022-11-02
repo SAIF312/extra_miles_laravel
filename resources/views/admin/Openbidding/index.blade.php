@@ -20,7 +20,7 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         <div class="row">
-                            <div class="col-xl-9 col-lg-9 col-sm-9">
+                            <div class="col-xl-12 col-lg-12 col-sm-12">
                                 <h3>Quota Price List</h3>
                                 @if ($errors->any())
                                     <div class="alert alert-danger mb-2">
@@ -32,11 +32,11 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-xl-3 col-lg-3 col-sm-3 text-right">
+                            {{-- <div class="col-xl-3 col-lg-3 col-sm-3 text-right">
                                 <button type="button" class="btn btn-primary mb-2 mr-3" data-toggle="modal" data-target="#registerModal">
                                     Add Bidding
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="table-responsive mb-4 mt-4">
@@ -55,7 +55,7 @@
                                         <th>Bidding Month</th>
                                         <th>Bidding number</th>
                                         <th>End Date</th>
-                                        <th>Action</th>
+                                        {{-- <th>Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -235,7 +235,7 @@ function Delete(id) {
                     { data: 'month', name: 'month' },
                     { data: 'bidding_number', name: 'bidding_number' },
                     { data: 'end_date', name: 'end_date' },
-                    { data: 'actions', name: 'actions' }
+                    // { data: 'actions', name: 'actions' }
                 ],
                 "oLanguage": {
                     "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },

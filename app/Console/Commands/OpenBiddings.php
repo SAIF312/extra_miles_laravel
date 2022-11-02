@@ -33,11 +33,12 @@ class OpenBiddings extends Command
         $response = $client->request('get', 'http://128.199.227.15:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
-        // $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();
+        // dd($response);
+        $open_bidding = OpenBidding::orderBy('id' , 'desc')->first();
         $exist = OpenBiddingParent::latest()->first();
 
         // dd($exist);
-       
+
         if($exist){
             if($exist->end_date != $response->end_date && $exist->bidding_number != $response->bidding_number && $exist->year != $response->year && $exist->month != $response->month)
             {
@@ -61,7 +62,7 @@ class OpenBiddings extends Command
                     ]);
                 }
             }
-          
+
         }else{
             $data = OpenBiddingParent::create([
                 'month'=>$response->month,

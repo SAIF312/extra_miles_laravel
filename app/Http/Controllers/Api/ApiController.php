@@ -40,9 +40,9 @@ class ApiController extends Controller
                 "message"=> "not found any data"
             ]);
         }
-    
+
     }
-    
+
     public function malaysian_fuel_prices(Request $request){
 
         $client = new \GuzzleHttp\Client();
@@ -85,7 +85,7 @@ class ApiController extends Controller
     public function open_biddings(Request $request){
         $parent = OpenBiddingParent::where('year', $request->year)->where('month', $request->month)->where('bidding_number' , $request->bidding_number)->first();
         // $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
-        
+
         if($parent){
             $data = OpenBidding::where('parent_id', $parent->id)->get()->makeHidden(['unique_group_id','parent_id']);
             return response()->json([
@@ -188,13 +188,19 @@ class ApiController extends Controller
         $pumps = array_reverse(MotoristFuelPrice::orderBy('id','desc')->limit(5)->pluck('pump')->toArray());
         // return $pumps;
         $grade = Grade::where('grade',$request->grade)->first();
-        foreach($pumps as $index=>$pump){
+        $index = 0;
+        foreach($pumps as $pump){
+            $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),0));
+            $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray());
+            if($zero_count != $element_count){
+                $fule_prices[$index]=[
+                    'pump' => $pump,
+                    'prices'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                    'dates'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                ];
+                $index +=1;
+            }
 
-            $fule_prices[$index]=[
-                'pump' => $pump,
-                'prices'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
-                'dates'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
-            ];
             // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
         }
         if(count($fule_prices) > 0){
@@ -244,6 +250,32 @@ class ApiController extends Controller
             return response()->json([
                 "status" => 200,
                 "data"=> $fule_prices
+            ]);
+            }
+            else{
+                return response()->json([
+                    "status" => 404,
+                    "message"=> "not found any data"
+                ]);
+            }
+
+    }
+
+    public function open_bidding_price_graph(Request $request){
+        $days = 360;
+        $unique =  OpenBidding::latest()->value('unique_group_id');   $days = 360;
+        $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+        foreach($bidding_prices as $index=>$bidding_price){
+        $bidding_prices[$index]=[
+            'title' => $bidding_price->grade,
+            'prices'=> OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('qouta_price')->toArray(),
+            'dates'=>  OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                    ];
+        }
+        if(count($bidding_prices) > 0){
+            return response()->json([
+                "status" => 200,
+                "data"=> $bidding_prices
             ]);
             }
             else{

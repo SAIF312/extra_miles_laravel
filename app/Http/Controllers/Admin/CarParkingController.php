@@ -19,13 +19,13 @@ class CarParkingController extends Controller
         if (request()->ajax()) {
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
-                ->editColumn('created_at', function ($unique_groups) {
+                ->editColumn('created_at', function ($unique_group) {
 
-                    return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
+                    return !is_null($unique_group->created_at) ? $unique_group->created_at->diffForHumans() :' Not found';
                 })
-                ->editColumn('location', function ($unique_groups) {
+                ->editColumn('location', function ($unique_group) {
 
-                    return '<a target="_blank" href="http://maps.google.com/?q='.$unique_groups->latitude.','.$unique_groups->longitude.'"><span class="btn badge badge-success">Location</span></a>';
+                    return '<a target="_blank" href="http://maps.google.com/?q='.$unique_group->latitude.','.$unique_group->longitude.'"><span class="btn badge badge-success">Location</span></a>';
                 })
 
 
@@ -33,11 +33,11 @@ class CarParkingController extends Controller
 
 
 
-                ->editColumn('actions', function ($unique_groups) {
+                ->editColumn('actions', function ($unique_group) {
                     return "<div class='btn-group-sm'>
-                        <a onclick='CarParkingModal($unique_groups->id)' class='btn btn-warning'><i class='fa fa-eye'></i></a>
-                        <a onclick='UserModal($unique_groups->id)' class='btn btn-success'><i class='fa fa-edit'></i></a>
-                       <!-- <a onClick='UserDelete($unique_groups)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
+                        <a onclick='CarParkingModal($unique_group->id)' class='btn btn-warning'><i class='fa fa-eye'></i></a>
+                        <!-- <a onclick='UserModal($unique_group->id)' class='btn btn-success'><i class='fa fa-edit'></i></a>-->
+                       <!-- <a onClick='UserDelete($unique_group)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
                             </div>";
                 })
                 ->rawColumns(['actions','status' , 'location'])
@@ -57,12 +57,8 @@ class CarParkingController extends Controller
         if (request()->ajax()) {
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
-                ->editColumn('actions', function ($unique_groups) {
-                    return "<div class='btn-group-sm'>
-                        <!-- <a onclick='CarParkingModal($unique_groups->id)' class='btn btn-warning'><i class='fa fa-eye'></i></a> -->
-                        <!-- <a onclick='UserModal($unique_groups->id)' class='btn btn-success'><i class='fa fa-edit'></i></a>      -->
-                        <!--  <a onClick='UserDelete($unique_groups)' class='btn btn-danger'><i class='fa fa-trash'></i></a>        -->
-                            </div>";
+                ->editColumn('actions', function ($unique_group) {
+                    return view('admin.carParking.action',compact('unique_group'));
                 })
                 ->rawColumns(['actions'])
                 ->toJson();
@@ -73,15 +69,28 @@ class CarParkingController extends Controller
     }
 
     public function edit($id){
-        $motorist = MotoristFuelPrice::where('id',$id)->first();
-        return view('admin.motorist.update',compact('motorist'));
+        $parking_price = CarParkingDaysPrice::where('id',$id)->with('car_parking')->first();
+        // dd($parking_price);
+        return view('admin.carParking.update',compact('parking_price'));
     }
 
     public function update(Request $request){
-        $motorist = MotoristFuelPrice::where('id',$request->id)->first();
-        if($motorist->price != $request->price){
-            $motorist->update(['price'=>$request->price]);
+        $parking_price = CarParkingDaysPrice::where('id',$request->id)->first();
+        if(isset($request->days)){
+            if($parking_price->days != $request->days){
+                $parking_price->update(['days'=>$request->days]);
+            }
         }
-        return redirect()->route('motorist.price');
+        if(isset($request->timing)){
+            if($parking_price->timing != $request->timing){
+                $parking_price->update(['timing'=>$request->timing]);
+            }
+        }
+        if(isset($request->price)){
+            if($parking_price->price != $request->price){
+                $parking_price->update(['price'=>$request->price]);
+            }
+        }
+        return redirect()->route('carparking.price');
     }
 }

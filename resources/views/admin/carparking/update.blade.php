@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Motorist Fuel Price
+    Parking Price
 @endsection
 
 
@@ -18,11 +18,11 @@
 
 
             <div class="row layout-top-spacing">
-                <div class="col-xl-4 col-lg-6 col-md-5 col-sm-12 layout-spacing">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                <h3>Update Motorist Fuel Price</h3>
+                                <h3>Update {{$parking_price->car_parking->name}} Parking Price</h3>
                                 @if ($errors->any())
                                     <div class="alert alert-danger mb-2">
                                         <ul>
@@ -36,17 +36,22 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                            <form method="post" action="{{route('motorist.update')}}">
+                            <form method="post" action="{{route('carparking.update')}}">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="grade">Fuel grade</label>
-                                    <input type="text" class="form-control" value="{{$motorist->grade}}" id="grade" placeholder="Enter grade" disabled>
-                                    <input value="{{$motorist->id}}" name="id" hidden>
+                                    <label for="days">Days</label>
+                                    <input type="text" class="form-control" value="{{$parking_price->days}}" name="days" id="days" placeholder="Enter grade">
+                                    <input value="{{$parking_price->id}}" name="id" hidden>
                                     <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                                 </div>
                                 <div class="form-group">
-                                    <label for="grade">Fuel Price</label>
-                                    <input type="number" step="0.01" class="form-control" value="{{$motorist->price}}" id="price" name="price" placeholder="Enter grade">
+                                    <label for="timing">Timing</label>
+                                    <input type="text" class="form-control" value="{{$parking_price->timing}}" id="timing" name="timing" placeholder="Enter grade">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="text" class="form-control" value="{{$parking_price->price}}" id="price" name="price" placeholder="Enter grade">
                                     <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -205,12 +210,12 @@ function Delete(id) {
     </script> -->
 
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
          $(function() {
 
             table = $('#default-ordering').DataTable( {
 
-                ajax: "{{ route('motorist.index') }}",
+                ajax: "{{ route('carparking.index') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'grade', name: 'grade' },
@@ -235,7 +240,7 @@ function Delete(id) {
             } );
         });
     </script>
-
+ --}}
 
 
 

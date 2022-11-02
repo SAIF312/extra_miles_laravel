@@ -47,10 +47,10 @@ Route::get('/trafic/images/price',[TraficImageController::class, 'index_data_tab
 Route::get('/trafic/images/index',[TraficImageController::class, 'index_data_table'])->name('Trafic_images.index');
 
 Route::get('/parking/price',[CarParkingController::class, 'index'])->name('carparking.price');
-
 Route::get('/parking/index',[CarParkingController::class, 'index_data_table'])->name('carparking.index');
-
 Route::get('carparking/modal/{id}',[CarParkingController::class, 'Modal'])->name('carparking.modal');
+Route::get('/parking/edit/{id}',[CarParkingController::class, 'edit'])->name('carparking.edit');
+Route::post('/parking/update',[CarParkingController::class, 'update'])->name('carparking.update');
 
 Route::prefix('profile')->as('profile.')->controller(ProfileController::class)->group(function() {
     Route:: get('index', 'index')->name('index');

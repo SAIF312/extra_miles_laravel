@@ -27,7 +27,7 @@ Route::get('traffic_cameras_images',[ApiController::class,'traffic_cameras_image
 Route::get('car_parking_singapur',[ApiController::class,'car_parking_singapur']);
 
         // database api for moeen
-Route::get('open_bidding_data_api',[ApiController::class,'Open_bidding_parent']);        
+Route::get('open_bidding_data_api',[ApiController::class,'Open_bidding_parent']);
 Route::get('compare_prices_api',[ApiController::class,'motorist_data_prices']);
 Route::post('open_bidding-api',[ApiController::class,'open_biddings']);
 Route::get('malaysian_fuel_api',[ApiController::class,'malaysian_fuel_api']);
@@ -41,6 +41,7 @@ Route::get('fuel_types',[ApiController::class,'fuel_types_api']);
 Route::get('grades',[ApiController::class,'motorist_grades']);
 Route::post('motorist_price_graph',[ApiController::class,'motorist_price_graph']);
 Route::get('malaysian_price_graph',[ApiController::class,'malaysian_price_graph']);
+Route::get('open_bidding_price_graph',[ApiController::class,'open_bidding_price_graph']);
 
 
 

@@ -20,7 +20,7 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                     <div class="widget-content widget-content-area br-6">
                         <div class="row">
-                            <div class="col-xl-9 col-lg-9 col-sm-9">
+                            <div class="col-xl-12 col-lg-12 col-sm-12">
                                 <h3>Malaysian Fuel Price List</h3>
                                 @if ($errors->any())
                                     <div class="alert alert-danger mb-2">
@@ -32,11 +32,11 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-xl-3 col-lg-3 col-sm-3 text-right">
+                            {{-- <div class="col-xl-3 col-lg-3 col-sm-3 text-right">
                                 <button type="button" class="btn btn-primary mb-2 mr-3" data-toggle="modal" data-target="#registerModal">
                                     Add Fuel Price
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="table-responsive mb-4 mt-4">

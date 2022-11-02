@@ -41,7 +41,7 @@ Route::get('fuel_types',[ApiController::class,'fuel_types_api']);
 Route::get('grades',[ApiController::class,'motorist_grades']);
 Route::post('motorist_price_graph',[ApiController::class,'motorist_price_graph']);
 Route::get('malaysian_price_graph',[ApiController::class,'malaysian_price_graph']);
-Route::get('open_bidding_price_graph',[ApiController::class,'open_bidding_price_graph']);
+Route::post('open_bidding_price_graph',[ApiController::class,'open_bidding_price_graph']);
 
 
 

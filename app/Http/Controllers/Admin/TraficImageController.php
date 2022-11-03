@@ -26,7 +26,7 @@ class TraficImageController extends Controller
                 })
                 ->editColumn('image', function ($unique_groups) {
                     
-                    return '<img src="'.$unique_groups->image.'" height="60px" width="60px" alt="No Image"/>';
+                    return '<a href="#"><img src="'.$unique_groups->image.'" height="60px" width="60px" alt="No Image"/></a>';
                     
                 })
                 ->editColumn('actions', function ($unique_groups) {

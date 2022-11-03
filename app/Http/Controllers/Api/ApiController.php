@@ -59,8 +59,6 @@ class ApiController extends Controller
         $response = json_decode($response->getBody()->getContents());
         return $response->trafic_images;
     }
-
-
     public function motorist_data_prices(Request $request){
 
         $motor = Grade::orderBy('created_at' , 'desc')->first();
@@ -81,7 +79,6 @@ class ApiController extends Controller
         }
 
     }
-
     public function open_biddings(Request $request){
         $parent = OpenBiddingParent::where('year', $request->year)->where('month', $request->month)->where('bidding_number' , $request->bidding_number)->first();
         // $open_bidding = OpenBidding::orderBy('created_at' , 'desc')->first();
@@ -100,7 +97,6 @@ class ApiController extends Controller
             ]);
         }
     }
-
     public function malaysian_fuel_api(){
 
         $open_bidding = MalysianFuelPrice::orderBy('id' , 'desc')->first();
@@ -118,7 +114,6 @@ class ApiController extends Controller
             ]);
         }
     }
-
     public function traffic_images_api(){
         $open_bidding = TraficImage::orderBy('created_at' , 'desc')->first();
         $data = CheckPoint::with('trafic_images')->whereIn('title',['wtc1','wtc'])->get();
@@ -136,7 +131,6 @@ class ApiController extends Controller
             ]);
         }
     }
-
     public function car_parking_singapur(){
 
 
@@ -145,7 +139,6 @@ class ApiController extends Controller
         $response = json_decode($response->getBody()->getContents());
         return $response;
     }
-
     public function car_parking_singapur_api(){
 
         $open_bidding = CarParking::orderBy('created_at' , 'desc')->first();
@@ -164,8 +157,6 @@ class ApiController extends Controller
         }
 
     }
-
-
     public function motorist_grades(){
         $grades = Grade::select('id','grade')->where('unique_group_id',Grade::orderBy('created_at' , 'desc')->value('unique_group_id'))->get();
         if(count($grades) > 0){
@@ -182,7 +173,6 @@ class ApiController extends Controller
             }
 
     }
-
     public function motorist_price_graph(Request $request){
 
         $pumps = array_reverse(MotoristFuelPrice::orderBy('id','desc')->limit(5)->pluck('pump')->toArray());
@@ -218,7 +208,6 @@ class ApiController extends Controller
 
 
     }
-
     public function fuel_types_api(){
         $fuel_types = Grade::latest()->limit(5)->get();
         if(count($fuel_types) > 0){
@@ -234,7 +223,6 @@ class ApiController extends Controller
             ]);
         }
     }
-
     public function malaysian_price_graph(){
         $days = 360;
         $unique =  MalysianFuelPrice::latest()->value('unique_group_id');

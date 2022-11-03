@@ -98,7 +98,7 @@
                     </li> --}}
 
                     <li class="nav-item theme-text">
-                        <a href="{{ url('home') }}" class="nav-link">Extra Miless</a>
+                        <a href="{{ route('motorist.price') }}" class="nav-link">Extra Miless</a>
 
                     </li>
                 </ul>

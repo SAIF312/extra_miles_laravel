@@ -139,16 +139,16 @@
       {{csrf_field()}}
       <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Current Password</label>
-    <input type="password" class="form-control" name="old_password" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input type="password" class="form-control" name="old_password" id="exampleInputEmail1" aria-describedby="emailHelp" required>
 </div>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Password</label>
-    <input type="password" class="form-control" name="new_password" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input type="password" class="form-control" name="new_password" id="exampleInputEmail1" aria-describedby="emailHelp" required>
     <input type="hidden" id="id" class="form-control" name="id" value="{{auth()->id()}}">
 </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
-    <input type="password" class="form-control" name="password_confirmation" id="exampleInputPassword1">
+    <input type="password" class="form-control" name="password_confirmation" id="exampleInputPassword1" required>
   </div>
   <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
   <button type="submit"   class="btn btn-primary" value="Update">Change Password</button>

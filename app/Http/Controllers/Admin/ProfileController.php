@@ -54,13 +54,11 @@ class ProfileController extends Controller
     public function updatePassword(Request $request)
     {
         $run = '';
-
-        $request->validate([
-            'old_password'=>'required|min:8',
-            'new_password'=>'required|min:8',
-            'password_confirmation'=>'required|same:new_password|min:8'
-        ]);
         if(Hash::check( $request->old_password,  auth()->user()->password)){
+            if($request->new_password != $request->password_confirmation ){
+                Alert::error('Wrong info', 'confirm password does not match');
+                return redirect()->back();
+            }
             $run = auth()->user()->update(['password'=> Hash::make($request->new_password)]);
         }
         else{
@@ -70,7 +68,6 @@ class ProfileController extends Controller
         if($run){
             Alert::success('Success', 'Profile Successfully Updated');
             return redirect()->back();
-
         }
         else{
             Alert::info('info', 'Nothing to update');

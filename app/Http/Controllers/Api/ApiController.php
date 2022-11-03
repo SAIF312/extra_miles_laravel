@@ -267,7 +267,7 @@ class ApiController extends Controller
         foreach($bidding_prices as $index=>$bidding_price){
             $bidding_prices[$index]=[
                 'title' => $bidding_price->grade,
-                'prices'=> OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('qouta_price')->toArray(),
+                'prices'=> OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
                 'dates'=>  OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
             ];
         }

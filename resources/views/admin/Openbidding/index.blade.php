@@ -50,6 +50,7 @@
                                         <th>Title</th>
                                         <th>Qouta</th>
                                         <th>Qouta Price</th>
+                                        <th>PQP</th>
                                         <th>Recieved</th>
                                         <th>Chnage price</th>
                                         <th>Bidding Month</th>
@@ -229,7 +230,8 @@ function Delete(id) {
                     { data: 'grade', name: 'grade' },
                     { data: 'title', name: 'title' },
                     { data: 'qouta', name: 'qouta' },
-                    { data: 'qouta_price', name: 'qouta_price' },
+                    { data: 'QP', name: 'QP' },
+                    { data: 'PQP', name: 'PQP' },
                     { data: 'recieved', name: 'recieved' },
                     { data: 'change_in_price', name: 'change_in_price' },
                     { data: 'month', name: 'month' },

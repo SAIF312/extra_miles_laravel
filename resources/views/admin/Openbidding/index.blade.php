@@ -49,7 +49,7 @@
                                         <th>Grade</th>
                                         <th>Title</th>
                                         <th>Qouta</th>
-                                        <th>Qouta Price</th>
+                                        <th>Qouta Premium</th>
                                         <th>PQP</th>
                                         <th>Recieved</th>
                                         <th>Chnage price</th>

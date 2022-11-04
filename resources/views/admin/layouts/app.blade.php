@@ -201,7 +201,7 @@
                             </a>
                         </li> -->
 
-          
+
                         <li class="menu">
                             <a href="{{route('motorist.price')}}"
                                 data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
@@ -212,7 +212,7 @@
                             </a>
                         </li>
 
-           
+
                         <li class="menu">
                             <a href="{{ route('malaysian.price') }}"
                                 data-active="{{ Request::is(['package', 'package/*']) ? 'true' : 'false' }}"
@@ -239,7 +239,7 @@
                                 class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-globe"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Trafic Images</span>
+                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Traffic Images</span>
                                 </div>
                             </a>
                         </li>

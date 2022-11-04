@@ -24,43 +24,47 @@ Route::get('/dashboard', function () {
     return view('admin.motorist.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 
-Route::get('/motorist/price',[MotoristController::class, 'index'])->name('motorist.price');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard');
 
-Route::get('/motorist/index',[MotoristController::class, 'index_data_table'])->name('motorist.index');
-Route::get('/motorist/edit/{id}',[MotoristController::class, 'edit'])->name('motorist.edit');
-Route::post('/motorist/update',[MotoristController::class, 'update'])->name('motorist.update');
+    Route::get('/motorist/price',[MotoristController::class, 'index'])->name('motorist.price');
 
-Route::get('/malaysian/price',[MalaysianController::class, 'index'])->name('malaysian.price');
-Route::get('/malaysian/edit/{id}',[MalaysianController::class, 'edit'])->name('malaysian.edit');
-Route::post('/malaysian/update',[MalaysianController::class, 'update'])->name('malaysian.update');
+    Route::get('/motorist/index',[MotoristController::class, 'index_data_table'])->name('motorist.index');
+    Route::get('/motorist/edit/{id}',[MotoristController::class, 'edit'])->name('motorist.edit');
+    Route::post('/motorist/update',[MotoristController::class, 'update'])->name('motorist.update');
 
-Route::get('/malaysian/index',[MalaysianController::class, 'index_data_table'])->name('malaysian.index');
+    Route::get('/malaysian/price',[MalaysianController::class, 'index'])->name('malaysian.price');
+    Route::get('/malaysian/edit/{id}',[MalaysianController::class, 'edit'])->name('malaysian.edit');
+    Route::post('/malaysian/update',[MalaysianController::class, 'update'])->name('malaysian.update');
 
-Route::get('/openbidding/price',[OpenbiddingController::class, 'index'])->name('openbidding.price');
+    Route::get('/malaysian/index',[MalaysianController::class, 'index_data_table'])->name('malaysian.index');
 
-Route::get('/openbidding/index',[OpenbiddingController::class, 'index_data_table'])->name('openbidding.index');
+    Route::get('/openbidding/price',[OpenbiddingController::class, 'index'])->name('openbidding.price');
 
-Route::get('/trafic/images/price',[TraficImageController::class, 'index_data_table'])->name('Trafic_images.price');
+    Route::get('/openbidding/index',[OpenbiddingController::class, 'index_data_table'])->name('openbidding.index');
 
-Route::get('/trafic/images/index',[TraficImageController::class, 'index_data_table'])->name('Trafic_images.index');
+    Route::get('/trafic/images/price',[TraficImageController::class, 'index_data_table'])->name('Trafic_images.price');
 
-Route::get('/parking/price',[CarParkingController::class, 'index'])->name('carparking.price');
-Route::get('/parking/index',[CarParkingController::class, 'index_data_table'])->name('carparking.index');
-Route::get('carparking/modal/{id}',[CarParkingController::class, 'Modal'])->name('carparking.modal');
-Route::get('/parking/edit/{id}',[CarParkingController::class, 'edit'])->name('carparking.edit');
-Route::post('/parking/update',[CarParkingController::class, 'update'])->name('carparking.update');
+    Route::get('/trafic/images/index',[TraficImageController::class, 'index_data_table'])->name('Trafic_images.index');
 
-Route::prefix('profile')->as('profile.')->controller(ProfileController::class)->group(function() {
-    Route:: get('index', 'index')->name('index');
-    Route:: post('store', 'store')->name('store');
-    Route:: post('status', 'status')->name('status');
-    Route:: get('delete/{id}', 'destroy')->name('delete');
-    Route:: post('modal', 'modal')->name('modal');
-    Route:: post('update', 'update')->name('update');
-    Route:: post('updatePassword', 'updatePassword')->name('updatePassword');
+    Route::get('/parking/price',[CarParkingController::class, 'index'])->name('carparking.price');
+    Route::get('/parking/index',[CarParkingController::class, 'index_data_table'])->name('carparking.index');
+    Route::get('carparking/modal/{id}',[CarParkingController::class, 'Modal'])->name('carparking.modal');
+    Route::get('/parking/edit/{id}',[CarParkingController::class, 'edit'])->name('carparking.edit');
+    Route::post('/parking/update',[CarParkingController::class, 'update'])->name('carparking.update');
+
+    Route::prefix('profile')->as('profile.')->controller(ProfileController::class)->group(function() {
+        Route:: get('index', 'index')->name('index');
+        Route:: post('store', 'store')->name('store');
+        Route:: post('status', 'status')->name('status');
+        Route:: get('delete/{id}', 'destroy')->name('delete');
+        Route:: post('modal', 'modal')->name('modal');
+        Route:: post('update', 'update')->name('update');
+        Route:: post('updatePassword', 'updatePassword')->name('updatePassword');
+    });
 });
+
 
 
 

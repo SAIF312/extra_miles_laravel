@@ -10,24 +10,24 @@ use Yajra\DataTables\Facades\DataTables;
 class TraficImageController extends Controller
 {
     public function index(){
-       
+
         return view('admin.TraficImage.index');
     }
 
     public function index_data_table(){
         $unique_groups = TraficImage::all();
-   
+
         if (request()->ajax()) {
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
-                    
+
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('image', function ($unique_groups) {
-                    
+
                     return '<a href="'.$unique_groups->image.'" target="_blank"><img src="'.$unique_groups->image.'" height="60px" width="60px" alt="No Image"/></a>';
-                    
+
                 })
                 ->editColumn('actions', function ($unique_groups) {
                     return "<div class='btn-group-sm'>
@@ -40,6 +40,6 @@ class TraficImageController extends Controller
                 ->toJson();
         }
         return view('admin.TraficImage.index');
-        
-    } 
+
+    }
 }

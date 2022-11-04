@@ -16,7 +16,7 @@ class MotoristController extends Controller
         return view('admin.motorist.index');
     }
     public function index_data_table(){
-        $unique_groups = MotoristFuelPrice::all();
+        $unique_groups = MotoristFuelPrice::orderBy('id','DESC')->orderBy('created_at','ASC')->get();
         //  $unique_groups = Grade::where('unique_group_id' , $grade)->with('motorist_fuel_prices')->get();
         // return view('admin.motorist.index' , compact('unique_groups'));
         // $users = User::whereHas(
@@ -31,13 +31,13 @@ class MotoristController extends Controller
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
-                    
+
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('pump', function ($unique_groups) {
-                    
+
                     return '<img src="'.$unique_groups->pump.'" height="50px" width="50px"/>';
-                   
+
                 })
                 ->editColumn('actions', function ($unique_groups) {
                     return view('admin.motorist.action',compact('unique_groups'));
@@ -46,7 +46,7 @@ class MotoristController extends Controller
                 ->toJson();
         }
         return view('admin.motorist.index');
-        
+
     }
 
     public function edit($id){

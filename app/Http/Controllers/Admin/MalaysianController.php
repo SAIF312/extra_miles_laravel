@@ -9,12 +9,12 @@ use Yajra\DataTables\Facades\DataTables;
 class MalaysianController extends Controller
 {
     public function index(){
-      
+
         return view('admin.malaysian.index');
     }
 
     public function index_data_table(){
-        $unique_groups = MalysianFuelPrice::all();
+        $unique_groups = MalysianFuelPrice::orderBy('id','DESC')->orderBy('created_at','ASC')->get();
         //  $unique_groups = Grade::where('unique_group_id' , $grade)->with('motorist_fuel_prices')->get();
         // return view('admin.motorist.index' , compact('unique_groups'));
         // $users = User::whereHas(
@@ -28,7 +28,7 @@ class MalaysianController extends Controller
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
-                    
+
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('actions', function ($unique_groups) {
@@ -38,7 +38,7 @@ class MalaysianController extends Controller
                 ->toJson();
         }
         return view('admin.malaysian.index');
-        
+
     }
 
     public function edit($id){
@@ -51,7 +51,7 @@ class MalaysianController extends Controller
         if($malaysian->price != $request->price){
             $malaysian->update(['price'=>$request->price]);
         }
-        
+
         return redirect()->route('malaysian.price');
     }
 }

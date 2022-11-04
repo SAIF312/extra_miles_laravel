@@ -9,30 +9,30 @@ use Yajra\DataTables\Facades\DataTables;
 class OpenbiddingController extends Controller
 {
     public function index(){
-       
+
         return view('admin.Openbidding.index');
     }
 
     public function index_data_table(){
-        $unique_groups = OpenBidding::with('parent')->get();
+        $unique_groups = OpenBidding::with('parent')->orderBy('id','DESC')->orderBy('created_at','ASC')->get();
         // return $unique_groups;
         if (request()->ajax()) {
             $index = 0;
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_group) {
-                    
+
                     return !is_null($unique_group->created_at) ? $unique_group->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('month', function ($unique_group) {
                     return $unique_group->parent->month;
                 })
                 ->editColumn('bidding_number', function ($unique_group) {
-                    
+
                     return $unique_group->parent->bidding_number;
                 })
                 ->editColumn('end_date', function ($unique_group) {
-                    
+
                     return $unique_group->parent->end_date;
                 })
                 ->editColumn('actions', function ($unique_group) {
@@ -46,6 +46,6 @@ class OpenbiddingController extends Controller
                 ->toJson();
         }
         return view('admin.Openbidding.index');
-        
+
     }
 }

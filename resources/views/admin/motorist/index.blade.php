@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Motorist Fuel Price
+    Motorist Fuel Prices
 @endsection
 
 
@@ -48,7 +48,7 @@
                                         <th>Grade</th>
                                         <th>pump</th>
                                         <th>price</th>
-                                        <th>chang in price</th>
+                                        <th>change in price</th>
                                         <th>Date</th>
                                         <!-- <th>Action</th> -->
                                     </tr>

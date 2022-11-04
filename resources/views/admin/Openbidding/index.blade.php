@@ -52,7 +52,7 @@
                                         <th>Qouta Premium</th>
                                         <th>PQP</th>
                                         <th>Recieved</th>
-                                        <th>Chnage price</th>
+                                        <th>Chnage in price</th>
                                         <th>Bidding Month</th>
                                         <th>Bidding number</th>
                                         <th>End Date</th>

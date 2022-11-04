@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Malaysian Fuel Price
+    Malaysian Fuel Prices
 @endsection
 
 
@@ -48,7 +48,7 @@
                                         <th>Type</th>
                                         <th>Title</th>
                                         <th>Price</th>
-                                        <th>chang in price</th>
+                                        <th>change in price</th>
                                         <th>Date</th>
                                         <!-- <th>Action</th> -->
                                     </tr>

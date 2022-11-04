@@ -90,7 +90,7 @@
                                         <th>SNO</th>
                                         <th>Days</th>
                                         <th>Timing</th>
-                                        <th>Pricesss</th>
+                                        <th>Price</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

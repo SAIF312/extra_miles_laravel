@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Trafic Images
+    Traffic Images
 @endsection
 
 
@@ -21,7 +21,7 @@
                     <div class="widget-content widget-content-area br-6">
                         <div class="row">
                             <div class="col-xl-9 col-lg-9 col-sm-9">
-                                <h3>Trafic Image List</h3>
+                                <h3>Traffic Image List</h3>
                                 @if ($errors->any())
                                     <div class="alert alert-danger mb-2">
                                         <ul>

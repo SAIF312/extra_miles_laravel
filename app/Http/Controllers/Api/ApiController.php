@@ -257,6 +257,7 @@ class ApiController extends Controller
                 'title' => $bidding_price->grade,
                 'prices'=> OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
                 'dates'=>  OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                'bidding_number'=>OpenBiddingParent::whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
             ];
         }
         if(count($bidding_prices) > 0){

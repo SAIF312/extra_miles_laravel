@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Malaysian Fuel Prices
+    Malaysi Fuel Price
 @endsection
 
 

@@ -22,13 +22,11 @@ class MalaysianController extends Controller
         //         $q->where('name', 'Customer');
         //     }
         // )->get();
-
         // return $unique_groups;
         if (request()->ajax()) {
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
-
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('actions', function ($unique_groups) {
@@ -51,7 +49,6 @@ class MalaysianController extends Controller
         if($malaysian->price != $request->price){
             $malaysian->update(['price'=>$request->price]);
         }
-
         return redirect()->route('malaysian.price');
     }
 }

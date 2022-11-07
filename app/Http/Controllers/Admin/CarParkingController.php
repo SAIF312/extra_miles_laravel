@@ -24,14 +24,8 @@ class CarParkingController extends Controller
                     return !is_null($unique_group->created_at) ? $unique_group->created_at->diffForHumans() :' Not found';
                 })
                 ->editColumn('location', function ($unique_group) {
-
-                    return '<a target="_blank" href="http://maps.google.com/?q='.$unique_group->latitude.','.$unique_group->longitude.'"><span class="btn badge badge-success">Location</span></a>';
+                    return view('admin.carparking.location_button',compact('unique_group'));
                 })
-
-
-
-
-
 
                 ->editColumn('actions', function ($unique_group) {
                     return "<div class='btn-group-sm'>
@@ -43,7 +37,7 @@ class CarParkingController extends Controller
                 ->rawColumns(['actions','status' , 'location'])
                 ->toJson();
         }
-        return view('admin.carParking.index');
+        return view('admin.carparking.index');
 
     }
 
@@ -63,7 +57,7 @@ class CarParkingController extends Controller
                 ->rawColumns(['actions'])
                 ->toJson();
         }
-        return view('admin.carParking.index');
+        return view('admin.carparking.index');
 
 
     }

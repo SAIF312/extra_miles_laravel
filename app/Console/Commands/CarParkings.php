@@ -53,6 +53,7 @@ class CarParkings extends Command
                     'name'=>$parking->name,
                     'unique_group_id' => $code,
                     'description'=>$parking->title,
+                    'location'=>$parking->location,
                     'latitude'=>$parking->lat,
                     'longitude'=>$parking->lng,
                 ]);

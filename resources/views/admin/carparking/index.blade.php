@@ -107,6 +107,23 @@
         </div>
     </div>
 
+    {{-- <div class="modal fade register-modal bd-example-modal-lg" id="location" tabindex="-1" role="dialog" aria-labelledby="locationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="locationLabel">
+                    <h4 class="modal-title">Car Parking Location</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="" title="Iframe Example"></iframe>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    {{-- Parking Model end--}}
+
+
 
 
 
@@ -213,40 +230,40 @@
 
 
 
-function Delete(id) {
-    swal.fire({
-        title: "Are you sure?",
-        text: "You will not be able to recover this imaginary file!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-        //  console.log(isConfirm);
-        if(result.isConfirmed){
-        $.ajax({
-        type : "GET",
-        url:'{{url("dashboard/delete")}}/' + id,
+        function Delete(id) {
+            swal.fire({
+                title: "Are you sure?",
+                text: "You will not be able to recover this imaginary file!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+            }).then((result) => {
+                //  console.log(isConfirm);
+                if(result.isConfirmed){
+                $.ajax({
+                type : "GET",
+                url:'{{url("dashboard/delete")}}/' + id,
 
-        success: function(data){
-        $('#default-ordering').DataTable().ajax.reload();
-        swal.fire("Success", " Dashboard admin delted successfully", "success");
-    },
-         error: function (error){
-        Snackbar.show({
-            text: 'Somthing Went Wrong',
-            pos: 'top-right',
-            actionTextColor: '#fff',
-            backgroundColor: '#e7515a'
+                success: function(data){
+                $('#default-ordering').DataTable().ajax.reload();
+                swal.fire("Success", " Dashboard admin delted successfully", "success");
+            },
+                error: function (error){
+                Snackbar.show({
+                    text: 'Somthing Went Wrong',
+                    pos: 'top-right',
+                    actionTextColor: '#fff',
+                    backgroundColor: '#e7515a'
+                });
+            }
         });
-    }
-});
+                }
+                else {
+            Swal.fire('Dashboard Admin not deleted', '', 'info')
         }
-        else {
-    Swal.fire('Dashboard Admin not deleted', '', 'info')
-  }
-    });
-}
+            });
+        }
 
 
     </script> -->
@@ -314,6 +331,12 @@ function CarParkingModal(id){
 
         } );
 
+}
+
+
+function open_model(url){
+    $('#location').modal('show');
+    $('#location').find('iframe').attr('src',url)
 }
 
 

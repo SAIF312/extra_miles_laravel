@@ -207,7 +207,7 @@
                                 data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Motorist Fuel Prices</span>
+                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Singapore Fuel Price</span>
                                 </div>
                             </a>
                         </li>
@@ -218,7 +218,7 @@
                                 data-active="{{ Request::is(['package', 'package/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
-                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Malaysian Fuel Prices</span>
+                                    <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Malaysia Fuel Price</span>
                                 </div>
                             </a>
                         </li>
@@ -239,7 +239,7 @@
                                 class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-globe"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Traffic Images</span>
+                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Traffic images</span>
                                 </div>
                             </a>
                         </li>

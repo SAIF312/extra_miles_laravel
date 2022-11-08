@@ -11,6 +11,6 @@ class OpenBiddingParent extends Model
     protected $guarded = [];
 
     public function children(){
-        return $this->belongsTo(OpenBidding::class, 'id' , 'parent_id');
+        return $this->hasMany(OpenBidding::class, 'parent_id','id');
     }
 }

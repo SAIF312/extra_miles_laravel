@@ -239,7 +239,7 @@
                                 class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-globe"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Traffic images</span>
+                                            aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Traffic Images</span>
                                 </div>
                             </a>
                         </li>

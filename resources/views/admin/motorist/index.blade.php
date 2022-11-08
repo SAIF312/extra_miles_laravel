@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 
 @section ('title')
-    Motorist Fuel Prices
+    Singapore Fuel Price
 @endsection
 
 
 @section ('header')
-    Price List
+Singapore Fuel Price List
 @endsection
 
 @section('content')
@@ -21,7 +21,57 @@
                     <div class="widget-content widget-content-area br-6">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-sm-12">
-                                <h3>Motorist Fuel Price List</h3>
+                                <h3>Latest Fuel Price in Singapore</h3>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-2">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
+                            {{-- <div class="col-xl-3 col-lg-3 col-sm-3 text-right">
+                                <button type="button" class="btn btn-primary mb-2 mr-3" data-toggle="modal" data-target="#registerModal">
+                                    Add Fuel Price
+                                </button>
+                            </div> --}}
+                        </div>
+
+                        <div class="table-responsive mb-4 mt-4">
+                             <table id="latest-prices" class="table table-hover" style="width:100%">
+
+                                <thead>
+                                    <tr>
+                                        <th>Grade</th>
+                                        @foreach($latest_price_singapore[0]->motorist_fuel_prices as $motorist)
+                                            <th><img src="{{$motorist->pump}}" width="50" height="50"></th>
+                                        @endforeach
+                                        <!-- <th>Action</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($latest_price_singapore as $prices_singapore)
+                                        <tr>
+                                            <td>{{$prices_singapore->motorist_fuel_prices[0]->grade}}</td>
+                                        @foreach ($prices_singapore->motorist_fuel_prices as $singapore_price)
+                                            <td>{{$singapore_price->price}}</td>
+                                        @endforeach
+                                    @endforeach
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                    <div class="widget-content widget-content-area br-6">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-sm-12">
+                                <h3>Fuel Price History</h3>
                                 @if ($errors->any())
                                     <div class="alert alert-danger mb-2">
                                         <ul>

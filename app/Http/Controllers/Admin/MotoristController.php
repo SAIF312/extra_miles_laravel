@@ -12,8 +12,10 @@ class MotoristController extends Controller
         // $grade = Grade::latest()->value('unique_group_id');
         // $unique_groups = Grade::where('unique_group_id' , $grade)->with('motorist_fuel_prices')->get();
         // return view('admin.motorist.index' , compact('unique_groups'));
-
-        return view('admin.motorist.index');
+        $motor = Grade::orderBy('created_at' , 'desc')->first();
+        $latest_price_singapore = Grade::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get()->makeHidden(['unique_group_id']);
+        // dd($latest_price_singapore[0]->motorist_fuel_prices[0]->pump);
+        return view('admin.motorist.index',compact('latest_price_singapore'));
     }
     public function index_data_table(){
         $unique_groups = MotoristFuelPrice::orderBy('id','DESC')->orderBy('created_at','ASC')->get();
@@ -30,17 +32,29 @@ class MotoristController extends Controller
             $index = 0;
             return DataTables::of($unique_groups)
                 ->addIndexColumn()
-                ->editColumn('created_at', function ($unique_groups) {
+                ->editColumn('created_at', function ($unique_group) {
 
-                    return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
+                    return !is_null($unique_group->created_at) ? $unique_group->created_at->diffForHumans() :' Not found';
                 })
-                ->editColumn('pump', function ($unique_groups) {
 
-                    return '<img src="'.$unique_groups->pump.'" height="50px" width="50px"/>';
+                ->editColumn('price', function ($unique_group) {
+
+                    return number_format((float)$unique_group->price, 2);
 
                 })
-                ->editColumn('actions', function ($unique_groups) {
-                    return view('admin.motorist.action',compact('unique_groups'));
+
+                ->editColumn('change_in_price', function ($unique_group) {
+
+                    return number_format((float)$unique_group->change_in_price, 2);
+
+                })
+                ->editColumn('pump', function ($unique_group) {
+
+                    return '<img src="'.$unique_group->pump.'" height="50px" width="50px"/>';
+
+                })
+                ->editColumn('actions', function ($unique_group) {
+                    return view('admin.motorist.action',compact('unique_group'));
                 })
                 ->rawColumns(['actions','pump','status'])
                 ->toJson();

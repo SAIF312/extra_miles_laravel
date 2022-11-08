@@ -29,6 +29,17 @@ class MalaysianController extends Controller
                 ->editColumn('created_at', function ($unique_groups) {
                     return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
                 })
+                ->editColumn('price', function ($unique_group) {
+
+                    return number_format((float)$unique_group->price, 2);
+
+                })
+
+                ->editColumn('change_in_price', function ($unique_group) {
+
+                    return number_format((float)$unique_group->change_in_price, 2);
+
+                })
                 ->editColumn('actions', function ($unique_groups) {
                     return view('admin.malaysian.action',compact('unique_groups'));
                 })

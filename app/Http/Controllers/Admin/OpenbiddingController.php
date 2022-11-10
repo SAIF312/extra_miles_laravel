@@ -14,7 +14,7 @@ class OpenbiddingController extends Controller
     }
 
     public function index_data_table(){
-        $unique_groups = OpenBidding::with('parent')->orderBy('id','DESC')->orderBy('created_at','ASC')->get();
+        $unique_groups = OpenBidding::with('parent')->orderBy('id','DESC')->orderBy('grade','ASC')->get();
         // return $unique_groups;
         if (request()->ajax()) {
             $index = 0;

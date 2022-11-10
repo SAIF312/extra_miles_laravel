@@ -56,6 +56,8 @@ class OpenBiddings extends Command
                                 // dump('end-true');
                             foreach ($response->oneminitoring as $fuelprice)
                             {
+                                $open_bidding = OpenBidding::latest()->limit(6)->get();
+                                $open_bidding = $open_bidding[5];
                                 $exist->update(['end_date'=>$response->end_date]);
                                 $ob = OpenBidding::where('parent_id', $exist->id)->where('grade', $fuelprice->category->grade)->first();
                                 $ob->update([

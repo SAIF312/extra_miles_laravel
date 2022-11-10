@@ -179,14 +179,20 @@ class ApiController extends Controller
         // return $pumps;
         $grade = Grade::where('grade',$request->grade)->first();
         $index = 0;
+        $fule_prices = [];
         foreach($pumps as $pump){
             $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),0));
             $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray());
             if($zero_count != $element_count){
+                $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                $m_dates = [];
+                foreach ($motorist_dates as $key=>$m_date){
+                    $m_dates[$key]= date('d F Y',strtotime($m_date));
+                }
                 $fule_prices[$index]=[
                     'pump' => $pump,
                     'prices'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
-                    'dates'=> MotoristFuelPrice::where('grade', $grade->grade)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                    'dates'=> $m_dates
                 ];
                 $index +=1;
             }
@@ -228,12 +234,17 @@ class ApiController extends Controller
         $unique =  MalysianFuelPrice::latest()->value('unique_group_id');
         $fule_prices = MalysianFuelPrice::where('unique_group_id', $unique)->whereIn('title' , ['RON 95','RON 97','EURO 5 B10'])->get()->makeHidden(['unique_group_id','type','price_change_flag']);
         foreach($fule_prices as $index=>$fule_price){
-        $fule_prices[$index]=[
-            'title' => $fule_price->title,
-            'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('price')->toArray(),
-            'dates'=>  MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('created_at')->toArray(),
-                    ];
-                }
+            $m_dates = [];
+            $malysian_dates = MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('created_at')->toArray();
+            foreach ($malysian_dates as $key=>$m_date){
+                $m_dates[$key]= date('M y',strtotime($m_date));
+            }
+            $fule_prices[$index]=[
+                'title' => $fule_price->title,
+                'prices'=> MalysianFuelPrice::where('title', $fule_price->title)->whereDate('created_at' , '>=' , Carbon::now()->subDays($days))->pluck('price')->toArray(),
+                'dates'=>  $m_dates
+            ];
+        }
         if(count($fule_prices) > 0){
             return response()->json([
                 "status" => 200,
@@ -253,10 +264,15 @@ class ApiController extends Controller
         $unique =  OpenBidding::latest()->value('unique_group_id');
         $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
         foreach($bidding_prices as $index=>$bidding_price){
+            $b_dates = [];
+            $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+            foreach ($bodding_dates as $key=>$b_date){
+                $b_dates[$key]= date('M y',strtotime($b_date));
+            }
             $bidding_prices[$index]=[
                 'title' => $bidding_price->grade,
                 'prices'=> OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
-                'dates'=>  OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('created_at')->toArray(),
+                'dates'=>$b_dates,
                 'bidding_number'=>OpenBiddingParent::whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
             ];
         }

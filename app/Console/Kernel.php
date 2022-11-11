@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('MalaysianFuelPrices:cron')->daily();
+        $schedule->command('MalaysianFuelPrices:cron')->monthlyOn(15, '02:00');
         $schedule->command('Motorist:cron')->daily();
         $schedule->command('OpenBiddings:cron')->hourlyAt(59);
         $schedule->command('TraficImages:cron')->everyThreeMinutes();

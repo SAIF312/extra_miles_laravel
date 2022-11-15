@@ -67,28 +67,28 @@ class Motorist extends Command
 
                 }
             }
-            foreach($response->fuel_prices as $key=>$fuelprice){
-                $grade_old = Grade::where('grade',$fuelprice->grade)->latest()->first();
-                $grade_new =   Grade::create([
-                    'grade' => $fuelprice->grade,
-                    'unique_group_id'=>$code,
-                    'price_change_flag'=>$flag
-                ]);
-
-                foreach($fuelprice->pump_price as $pump_price){
-
-                    $motor = MotoristFuelPrice::where('grade_id' , $grade_old->id)->where('pump','like',$pump_price->pump)->orderBy('created_at','desc')->first();
-
-                    MotoristFuelPrice::create([
-                        'grade_id'=>$grade_new->id,
-                        'grade'=>$fuelprice->grade,
-                        'pump'=>$pump_price->pump,
-                        'price'=>(float)$pump_price->price,
-                        'price_change_flag'=>$flag,
-                        'change_in_price' => (float)$pump_price->price - $motor->price,
-                        'currency'=>$pump_price->currency
+            if($flag == "true"){
+                foreach($response->fuel_prices as $key=>$fuelprice){
+                    $grade_old = Grade::where('grade',$fuelprice->grade)->latest()->first();
+                    $grade_new =   Grade::create([
+                        'grade' => $fuelprice->grade,
+                        'unique_group_id'=>$code,
+                        'price_change_flag'=>$flag
                     ]);
 
+                    foreach($fuelprice->pump_price as $pump_price){
+                        $motor = MotoristFuelPrice::where('grade_id' , $grade_old->id)->where('pump','like',$pump_price->pump)->orderBy('created_at','desc')->first();
+                        MotoristFuelPrice::create([
+                            'grade_id'=>$grade_new->id,
+                            'grade'=>$fuelprice->grade,
+                            'pump'=>$pump_price->pump,
+                            'price'=>(float)$pump_price->price,
+                            'price_change_flag'=>$flag,
+                            'change_in_price' => (float)$pump_price->price - $motor->price,
+                            'currency'=>$pump_price->currency
+                        ]);
+
+                    }
                 }
             }
         }else{

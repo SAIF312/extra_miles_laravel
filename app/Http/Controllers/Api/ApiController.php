@@ -250,13 +250,13 @@ class ApiController extends Controller
                 "status" => 200,
                 "data"=> $fule_prices
             ]);
-            }
-            else{
-                return response()->json([
-                    "status" => 404,
-                    "message"=> "not found any data"
-                ]);
-            }
+        }
+        else{
+            return response()->json([
+                "status" => 404,
+                "message"=> "not found any data"
+            ]);
+        }
 
     }
 

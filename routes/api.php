@@ -19,7 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::get('motorist_data',[ApiController::class,'motorist_data']);
 Route::get('coe_open_biding',[ApiController::class,'open_biding']);
 Route::get('malaysian_fuel_prices',[ApiController::class,'malaysian_fuel_prices']);
@@ -27,13 +26,13 @@ Route::get('traffic_cameras_images',[ApiController::class,'traffic_cameras_image
 Route::get('car_parking_singapur',[ApiController::class,'car_parking_singapur']);
 
         // database api for moeen
+
 Route::get('open_bidding_data_api',[ApiController::class,'Open_bidding_parent']);
 Route::get('compare_prices_api',[ApiController::class,'motorist_data_prices']);
 Route::post('open_bidding-api',[ApiController::class,'open_biddings']);
 Route::get('malaysian_fuel_api',[ApiController::class,'malaysian_fuel_api']);
 Route::get('traffic_images_api',[ApiController::class,'traffic_images_api']);
 Route::get('car_parking_singapur_api',[ApiController::class,'car_parking_singapur_api']);
-
 
         // graph api
 

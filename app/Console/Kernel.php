@@ -15,11 +15,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('Motorist:cron')->hourlyAt(39);
-        $schedule->command('MalaysianFuelPrices:cron')->hourlyAt(49);
-        $schedule->command('OpenBiddings:cron')->hourlyAt(59);
-        $schedule->command('TraficImages:cron')->everyThreeMinutes();
-        $schedule->command('CarParking:cron')->weekly();
+        // $schedule->command('Motorist:cron')->hourlyAt(39);
+        // $schedule->command('MalaysianFuelPrices:cron')->hourlyAt(49);
+        // $schedule->command('OpenBiddings:cron')->hourlyAt(59);
+        // $schedule->command('TraficImages:cron')->everyThreeMinutes();
+        // $schedule->command('CarParking:cron')->weekly();
+        $schedule->command('Motorist:cron')->everyMinute();
+        $schedule->command('MalaysianFuelPrices:cron')->everyMinute();
+        $schedule->command('OpenBiddings:cron')->everyMinute();
+        $schedule->command('TraficImages:cron')->everyMinute();
+        $schedule->command('CarParking:cron')->everyMinute();
     }
 
     /**
@@ -29,7 +34,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

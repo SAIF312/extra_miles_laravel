@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\TraficImage;
+use Illuminate\Support\Facades\Http;
 
 class TraficImages extends Command
 {
@@ -28,28 +29,28 @@ class TraficImages extends Command
      */
     public function handle()
     {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://128.199.227.15:5000/traffic_cameras_images');
-        $response = json_decode($response->getBody()->getContents());
-        if($response){
-            $traffic_images=TraficImage::all();
-            foreach($traffic_images as $ti){
+        $response = Http::withHeaders([
+            'AccountKey' => 'yv3q/xw1QQ2cIhwWKZmUIQ==',
+        ])->get('http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2');
+        // $response = $client->request('get', 'http://datamall2.mytransport.sg/ltaodataservice/Traffic-Imagesv2');
+        $response = json_decode($response);
+
+        if ($response) {
+            $traffic_images = TraficImage::all();
+            foreach ($traffic_images as $ti) {
                 $ti->delete();
             }
 
-            $code = uniqid();
-            foreach($response->trafic_images as $fuelprice){
+            // $code = uniqid();
+            foreach ($response->value as $fuelprice) {
 
                 TraficImage::create([
-                    'unique_group_id'=>$code,
-                    'checkpoint_id'=>$fuelprice->checkpoint_id,
-                    'checkpoint'=>$fuelprice->checkpoint,
-                    'title'=>$fuelprice->title,
-                    'date'=>$fuelprice->date,
-                    'image'=>$fuelprice->image,
+                    // 'unique_group_id' => $code,
+                    'camera_id' => $fuelprice->CameraID,
+                    'lat' => $fuelprice->Latitude,
+                    'lng' => $fuelprice->Longitude,
+                    'image' => $fuelprice->ImageLink,
                 ]);
-
-
             }
         }
 

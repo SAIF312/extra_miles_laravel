@@ -9,12 +9,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TraficImageController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         return view('admin.TraficImage.index');
     }
 
-    public function index_data_table(){
+    public function index_data_table()
+    {
         $unique_groups = TraficImage::all();
 
         if (request()->ajax()) {
@@ -22,12 +24,15 @@ class TraficImageController extends Controller
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($unique_groups) {
 
-                    return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() :' Not found';
+                    return !is_null($unique_groups->created_at) ? $unique_groups->created_at->diffForHumans() : ' Not found';
                 })
                 ->editColumn('image', function ($unique_groups) {
 
-                    return '<a href="'.$unique_groups->image.'" target="_blank"><img src="'.$unique_groups->image.'" height="60px" width="60px" alt="No Image"/></a>';
-
+                    return '<a href="' . $unique_groups->image . '" target="_blank"><img src="' . $unique_groups->image . '" height="60px" width="60px" alt="No Image"/></a>';
+                })
+                ->editColumn('location', function ($unique_groups) {
+                    return     '<a target="_blank" href="http://maps.google.com/?q=' . $unique_groups->lat . ',' . $unique_groups->lng . '"><span class="btn badge badge-success">Location</span></a>';
+                    // return  '<iframe src="http://maps.google.com/?q=' . $unique_groups->lat . ',' . $unique_groups->lng . '" width="150" height="100" title="Iframe Example"></iframe>';
                 })
                 ->editColumn('actions', function ($unique_groups) {
                     return "<div class='btn-group-sm'>
@@ -36,10 +41,9 @@ class TraficImageController extends Controller
                       <!--  <a onClick='UserDelete($unique_groups)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
                             </div>";
                 })
-                ->rawColumns(['actions','status','image'])
+                ->rawColumns(['actions', 'status', 'image', 'location'])
                 ->toJson();
         }
         return view('admin.TraficImage.index');
-
     }
 }

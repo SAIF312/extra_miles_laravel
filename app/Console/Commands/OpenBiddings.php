@@ -30,7 +30,7 @@ class OpenBiddings extends Command
     {
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://128.199.227.15:5000/coe_open_bidding');
+        $response = $client->request('get', 'http://192.168.18.121:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         if ($response->message != '') {
             //
@@ -46,19 +46,18 @@ class OpenBiddings extends Command
 
             if ($exist) {
                 // dd('exist');
-                if($exist->year == $response->year){
+                if ($exist->year == $response->year) {
                     // dump('yrar-true');
-                    if($exist->month == $response->month){
+                    if ($exist->month == $response->month) {
                         // dump('month-true');
-                        if($exist->bidding_number == $response->bidding_number){
+                        if ($exist->bidding_number == $response->bidding_number) {
                             // dump('num-true');
                             // if($exist->end_date == $response->end_date){
-                                // dump('end-true');
-                            foreach ($response->oneminitoring as $fuelprice)
-                            {
+                            // dump('end-true');
+                            foreach ($response->oneminitoring as $fuelprice) {
                                 $open_bidding = OpenBidding::latest()->limit(6)->get();
                                 $open_bidding = $open_bidding[5];
-                                $exist->update(['end_date'=>$response->end_date]);
+                                $exist->update(['end_date' => $response->end_date]);
                                 $ob = OpenBidding::where('parent_id', $exist->id)->where('grade', $fuelprice->category->grade)->first();
                                 $ob->update([
                                     'unique_group_id' => $code,
@@ -72,7 +71,6 @@ class OpenBiddings extends Command
                                     'recieved' => $fuelprice->recieved,
                                     'change_in_price' => (float)$fuelprice->qouta_price - OpenBidding::where('unique_group_id', $open_bidding->unique_group_id)->where('grade', $fuelprice->category->grade)->value('QP'),
                                 ]);
-
                             }
                             // }else{
                             //     // dd('end-false');
@@ -97,7 +95,7 @@ class OpenBiddings extends Command
                             //         ]);
                             //     }
                             // }
-                        }else{
+                        } else {
                             // dump('num-false');
                             $data = OpenBiddingParent::create([
                                 'month' => $response->month,
@@ -120,7 +118,7 @@ class OpenBiddings extends Command
                                 ]);
                             }
                         }
-                    }else{
+                    } else {
                         // dump('month-false');
                         $data = OpenBiddingParent::create([
                             'month' => $response->month,
@@ -143,7 +141,7 @@ class OpenBiddings extends Command
                             ]);
                         }
                     }
-                }else{
+                } else {
                     // dd('yrar-false');
                     $data = OpenBiddingParent::create([
                         'month' => $response->month,
@@ -240,5 +238,4 @@ class OpenBiddings extends Command
 
         return Command::SUCCESS;
     }
-
 }

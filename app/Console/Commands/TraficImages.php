@@ -36,10 +36,10 @@ class TraficImages extends Command
         $response = json_decode($response);
 
         if ($response) {
-            $traffic_images = TraficImage::all();
-            foreach ($traffic_images as $ti) {
-                $ti->delete();
-            }
+            $traffic_images = TraficImage::truncate();
+            // foreach ($traffic_images as $ti) {
+            //     $ti->delete();
+            // }
 
             // $code = uniqid();
             foreach ($response->value as $fuelprice) {

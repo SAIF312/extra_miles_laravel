@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CarParkingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+
+Route::post('add_parking_slot', [CarParkingController::class, 'add_parking_slot'])->name('add_parking_slot');

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\CarParkingDaysPrice;
 use App\Models\CarParking;
+use Illuminate\Validation\Rules\Exists;
 
 class CarParkings extends Command
 {
@@ -34,19 +35,12 @@ class CarParkings extends Command
 
         $response = json_decode($response->getBody()->getContents());
         if ($response) {
-            $car_parking_prices = CarParkingDaysPrice::all();
+            $car_parking_prices = CarParking::where('unique_group_id', '!=', null)->get();
+
             foreach ($car_parking_prices as $cpp) {
+                CarParkingDaysPrice::where('car_parking_id', $cpp->id)->delete();
                 $cpp->delete();
             }
-
-            $car_parkings = CarParking::all();
-            foreach ($car_parkings as $cp) {
-                $cp->delete();
-            }
-
-
-
-
             $code = uniqid();
             foreach ($response->parking as $key => $parking) {
                 $carparking =  CarParking::create([

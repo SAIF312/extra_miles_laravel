@@ -42,6 +42,10 @@ class CarParkingController extends Controller
         return view('admin.carparking.index');
     }
 
+    public function create(){
+        return view('admin.carparking.create');
+    }
+
 
 
     public function Modal($id)

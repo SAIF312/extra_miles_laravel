@@ -32,7 +32,7 @@ class CarParkingController extends Controller
                 ->editColumn('actions', function ($unique_group) {
                     return "<div class='btn-group-sm'>
                         <a onclick='CarParkingModal($unique_group->id)' class='btn btn-warning'><i class='fa fa-eye'></i></a>
-                        <!-- <a onclick='UserModal($unique_group->id)' class='btn btn-success'><i class='fa fa-edit'></i></a>-->
+                        <a onclick='addDays($unique_group->id)' class='btn btn-success'><i class='fa fa-plus'></i></a>
                        <!-- <a onClick='UserDelete($unique_group)' class='btn btn-danger'><i class='fa fa-trash'></i></a> -->
                             </div>";
                 })
@@ -102,6 +102,18 @@ class CarParkingController extends Controller
         foreach ($request->days as $key => $day) {
             CarParkingDaysPrice::create([
                 'car_parking_id' => $parking->id,
+                'days' => $day,
+                'timing' => $request->times[$key],
+                'price' => $request->prices[$key],
+            ]);
+        }
+        return view('admin.carparking.index');
+    }
+    public function   add_parking_days(Request $request)
+    {
+        foreach ($request->days as $key => $day) {
+            CarParkingDaysPrice::create([
+                'car_parking_id' => $request->id,
                 'days' => $day,
                 'timing' => $request->times[$key],
                 'price' => $request->prices[$key],

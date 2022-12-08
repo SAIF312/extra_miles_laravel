@@ -15,17 +15,17 @@
     <div class="form-group">
         <label for="exampleInputEmail1">Day</label>
         <input type="text" name="days[]" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Mondays to Saturdays">
+            required placeholder="Mondays to Saturdays">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Time</label>
-        <input type="text" name="times[]" class="form-control" id="exampleInputPassword1"
+        <input type="text" name="times[]" class="form-control" id="exampleInputPassword1" required
             placeholder="8:00am – 4:59 pm">
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Price</label>
         <input type="text" name="prices[]" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="S$2.00 for subsequent 30 minutes">
+            required placeholder="S$2.00 for subsequent 30 minutes">
     </div>
     <hr>
     <hr>
@@ -54,17 +54,17 @@
             <div class="form-group">
         <label for="exampleInputEmail1">Day</label>
         <input type="text" name="days[]" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Mondays to Saturdays">
+            required placeholder="Mondays to Saturdays">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Time</label>
         <input type="text" name="times[]" class="form-control" id="exampleInputPassword1"
-            placeholder="8:00am – 4:59 pm">
+            required placeholder="8:00am – 4:59 pm">
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Price</label>
         <input type="text" name="prices[]" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="S$2.00 for subsequent 30 minutes">
+            required placeholder="S$2.00 for subsequent 30 minutes">
     </div>
 <hr>
 <hr>

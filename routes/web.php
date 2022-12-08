@@ -26,3 +26,4 @@ require __DIR__ . '/auth.php';
 
 
 Route::post('add_parking_slot', [CarParkingController::class, 'add_parking_slot'])->name('add_parking_slot');
+Route::post('add_parking_days', [CarParkingController::class, 'add_parking_days'])->name('add_parking_days');

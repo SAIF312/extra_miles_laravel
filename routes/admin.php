@@ -50,6 +50,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/parking/price',[CarParkingController::class, 'index'])->name('carparking.price');
     Route::get('/parking/index',[CarParkingController::class, 'index_data_table'])->name('carparking.index');
+
+    Route::get('/parking/create',[CarParkingController::class, 'create'])->name('carparking.create');
+
     Route::get('carparking/modal/{id}',[CarParkingController::class, 'Modal'])->name('carparking.modal');
     Route::get('/parking/edit/{id}',[CarParkingController::class, 'edit'])->name('carparking.edit');
     Route::post('/parking/update',[CarParkingController::class, 'update'])->name('carparking.update');

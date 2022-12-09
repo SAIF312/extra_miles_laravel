@@ -175,45 +175,190 @@ class ApiController extends Controller
             ]);
         }
     }
+    // public function motorist_price_graph(Request $request)
+    // {
+
+    //     $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
+    //     // return $pumps;
+    //     $grade = Grade::where('grade', $request->grade)->first();
+    //     $index = 0;
+    //     $fule_prices = [];
+    //     foreach ($pumps as $pump) {
+    //         $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(), 0));
+    //         $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray());
+    //         if ($zero_count != $element_count) {
+    //             $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+    //             $m_dates = [];
+    //             foreach ($motorist_dates as $key => $m_date) {
+    //                 $m_dates[$key] = date('d F Y', strtotime($m_date));
+    //             }
+    //             $fule_prices[$index] = [
+    //                 'pump' => $pump,
+    //                 'prices' => MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+    //                 'dates' => $m_dates
+    //             ];
+    //             $index += 1;
+    //         }
+
+    //         // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
+    //     }
+    //     if (count($fule_prices) > 0) {
+    //         return response()->json([
+    //             "status" => 200,
+    //             "data" => $fule_prices
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             "status" => 404,
+    //             "message" => "not found any data"
+    //         ]);
+    //     }
+    // }
+
+
     public function motorist_price_graph(Request $request)
     {
+        if($request->days == 30){
+            if(MotoristFuelPrice::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->count() > 0){
+                $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
+                // return $pumps;
+                $grade = Grade::where('grade', $request->grade)->first();
+                $index = 0;
+                $fule_prices = [];
+                foreach ($pumps as $pump) {
+                    $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(), 0));
+                    $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray());
+                    if ($zero_count != $element_count) {
+                        $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                        $m_dates = [];
+                        foreach ($motorist_dates as $key => $m_date) {
+                            $m_dates[$key] = date('d F Y', strtotime($m_date));
+                        }
+                        $fule_prices[$index] = [
+                            'pump' => $pump,
+                            'prices' => MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                            'dates' => $m_dates
+                        ];
+                        $index += 1;
+                    }
 
-        $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
-        // return $pumps;
-        $grade = Grade::where('grade', $request->grade)->first();
-        $index = 0;
-        $fule_prices = [];
-        foreach ($pumps as $pump) {
-            $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(), 0));
-            $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray());
-            if ($zero_count != $element_count) {
-                $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
-                $m_dates = [];
-                foreach ($motorist_dates as $key => $m_date) {
-                    $m_dates[$key] = date('d F Y', strtotime($m_date));
+                    // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
                 }
-                $fule_prices[$index] = [
-                    'pump' => $pump,
-                    'prices' => MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
-                    'dates' => $m_dates
-                ];
-                $index += 1;
+                if (count($fule_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $fule_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
             }
+        }elseif($request->days == 180){
+            if(MotoristFuelPrice::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->count() > 0){
+                $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
+                // return $pumps;
+                $grade = Grade::where('grade', $request->grade)->first();
+                $index = 0;
+                $fule_prices = [];
+                foreach ($pumps as $pump) {
+                    $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(), 0));
+                    $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray());
+                    if ($zero_count != $element_count) {
+                        $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                        $m_dates = [];
+                        foreach ($motorist_dates as $key => $m_date) {
+                            $m_dates[$key] = date('d F Y', strtotime($m_date));
+                        }
+                        $fule_prices[$index] = [
+                            'pump' => $pump,
+                            'prices' => MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                            'dates' => $m_dates
+                        ];
+                        $index += 1;
+                    }
 
-            // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
-        }
-        if (count($fule_prices) > 0) {
-            return response()->json([
-                "status" => 200,
-                "data" => $fule_prices
-            ]);
-        } else {
+                    // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
+                }
+                if (count($fule_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $fule_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
+            }
+        }elseif($request->days == 360){
+            if(MotoristFuelPrice::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->count() > 0){
+                $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
+                // return $pumps;
+                $grade = Grade::where('grade', $request->grade)->first();
+                $index = 0;
+                $fule_prices = [];
+                foreach ($pumps as $pump) {
+                    $zero_count = count(array_keys(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(), 0));
+                    $element_count = count(MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray());
+                    if ($zero_count != $element_count) {
+                        $motorist_dates = MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                        $m_dates = [];
+                        foreach ($motorist_dates as $key => $m_date) {
+                            $m_dates[$key] = date('d F Y', strtotime($m_date));
+                        }
+                        $fule_prices[$index] = [
+                            'pump' => $pump,
+                            'prices' => MotoristFuelPrice::where('grade', $grade->grade)->where('pump', $pump)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('price')->toArray(),
+                            'dates' => $m_dates
+                        ];
+                        $index += 1;
+                    }
+
+                    // $fuel_price = MotoristFuelPrice::where('grade_id', $request->grade_id)->where('pump',$pump)->whereDate('created_at' , '>=' , Carbon::now()->subDays($request->days))->pluck('price','created_at');
+                }
+                if (count($fule_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $fule_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
+            }
+        }else{
             return response()->json([
                 "status" => 404,
-                "message" => "not found any data"
+                "message" => "Choose days values from 30, 180,360"
             ]);
         }
+
+
     }
+
+
+
     public function fuel_types_api()
     {
         $fuel_types = Grade::latest()->limit(5)->get();
@@ -259,33 +404,146 @@ class ApiController extends Controller
         }
     }
 
-    public function open_bidding_price_graph(Request $request)
+    // public function open_bidding_price_graph(Request $request)
+    // {
+    //     $unique =  OpenBidding::latest()->value('unique_group_id');
+    //     $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+    //     foreach ($bidding_prices as $index => $bidding_price) {
+    //         $b_dates = [];
+    //         $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+    //         foreach ($bodding_dates as $key => $b_date) {
+    //             $b_dates[$key] = date('M y', strtotime($b_date));
+    //         }
+    //         $bidding_prices[$index] = [
+    //             'title' => $bidding_price->grade,
+    //             'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+    //             'dates' => $b_dates,
+    //             'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+    //         ];
+    //     }
+    //     if (count($bidding_prices) > 0) {
+    //         return response()->json([
+    //             "status" => 200,
+    //             "data" => $bidding_prices
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             "status" => 404,
+    //             "message" => "not found any data"
+    //         ]);
+    //     }
+    // }
+
+     public function open_bidding_price_graph(Request $request)
     {
-        $unique =  OpenBidding::latest()->value('unique_group_id');
-        $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
-        foreach ($bidding_prices as $index => $bidding_price) {
-            $b_dates = [];
-            $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
-            foreach ($bodding_dates as $key => $b_date) {
-                $b_dates[$key] = date('M y', strtotime($b_date));
+        if($request->days == 30){
+            if(OpenBidding::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->count() > 0){
+                $unique =  OpenBidding::latest()->value('unique_group_id');
+                $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+                foreach ($bidding_prices as $index => $bidding_price) {
+                    $b_dates = [];
+                    $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                    foreach ($bodding_dates as $key => $b_date) {
+                        $b_dates[$key] = date('M y', strtotime($b_date));
+                    }
+                    $bidding_prices[$index] = [
+                        'title' => $bidding_price->grade,
+                        'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+                        'dates' => $b_dates,
+                        'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+                    ];
+                }
+                if (count($bidding_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $bidding_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
             }
-            $bidding_prices[$index] = [
-                'title' => $bidding_price->grade,
-                'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
-                'dates' => $b_dates,
-                'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
-            ];
-        }
-        if (count($bidding_prices) > 0) {
-            return response()->json([
-                "status" => 200,
-                "data" => $bidding_prices
-            ]);
-        } else {
+        }elseif($request->days == 180){
+            if(OpenBidding::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->whereDate('created_at', '<', Carbon::now()->subDays(30))->count() > 0){
+                $unique =  OpenBidding::latest()->value('unique_group_id');
+                $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+                foreach ($bidding_prices as $index => $bidding_price) {
+                    $b_dates = [];
+                    $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                    foreach ($bodding_dates as $key => $b_date) {
+                        $b_dates[$key] = date('M y', strtotime($b_date));
+                    }
+                    $bidding_prices[$index] = [
+                        'title' => $bidding_price->grade,
+                        'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+                        'dates' => $b_dates,
+                        'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+                    ];
+                }
+                if (count($bidding_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $bidding_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
+            }
+        }elseif($request->days == 360){
+            if(OpenBidding::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->whereDate('created_at', '<', Carbon::now()->subDays(180))->count() > 0){
+                $unique =  OpenBidding::latest()->value('unique_group_id');
+                $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+                foreach ($bidding_prices as $index => $bidding_price) {
+                    $b_dates = [];
+                    $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                    foreach ($bodding_dates as $key => $b_date) {
+                        $b_dates[$key] = date('M y', strtotime($b_date));
+                    }
+                    $bidding_prices[$index] = [
+                        'title' => $bidding_price->grade,
+                        'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+                        'dates' => $b_dates,
+                        'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+                    ];
+                }
+                if (count($bidding_prices) > 0) {
+                    return response()->json([
+                        "status" => 200,
+                        "data" => $bidding_prices
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 404,
+                        "message" => "not found any data"
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    "status" => 403,
+                    "message" => "data not exist for ".$request->days." days"
+                ]);
+            }
+        }else{
             return response()->json([
                 "status" => 404,
-                "message" => "not found any data"
+                "message" => "Choose days values from 30, 180,360"
             ]);
         }
+
     }
 }

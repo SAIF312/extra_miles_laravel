@@ -259,32 +259,69 @@ class ApiController extends Controller
         }
     }
 
-    public function open_bidding_price_graph(Request $request)
+    // public function open_bidding_price_graph(Request $request)
+    // {
+    //     $unique =  OpenBidding::latest()->value('unique_group_id');
+    //     $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+    //     foreach ($bidding_prices as $index => $bidding_price) {
+    //         $b_dates = [];
+    //         $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+    //         foreach ($bodding_dates as $key => $b_date) {
+    //             $b_dates[$key] = date('M y', strtotime($b_date));
+    //         }
+    //         $bidding_prices[$index] = [
+    //             'title' => $bidding_price->grade,
+    //             'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+    //             'dates' => $b_dates,
+    //             'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+    //         ];
+    //     }
+    //     if (count($bidding_prices) > 0) {
+    //         return response()->json([
+    //             "status" => 200,
+    //             "data" => $bidding_prices
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             "status" => 404,
+    //             "message" => "not found any data"
+    //         ]);
+    //     }
+    // }
+
+     public function open_bidding_price_graph(Request $request)
     {
-        $unique =  OpenBidding::latest()->value('unique_group_id');
-        $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
-        foreach ($bidding_prices as $index => $bidding_price) {
-            $b_dates = [];
-            $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
-            foreach ($bodding_dates as $key => $b_date) {
-                $b_dates[$key] = date('M y', strtotime($b_date));
+        if(OpenBidding::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->count() > 0){
+            $unique =  OpenBidding::latest()->value('unique_group_id');
+            $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
+            foreach ($bidding_prices as $index => $bidding_price) {
+                $b_dates = [];
+                $bodding_dates = OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('created_at')->toArray();
+                foreach ($bodding_dates as $key => $b_date) {
+                    $b_dates[$key] = date('M y', strtotime($b_date));
+                }
+                $bidding_prices[$index] = [
+                    'title' => $bidding_price->grade,
+                    'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
+                    'dates' => $b_dates,
+                    'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
+                ];
             }
-            $bidding_prices[$index] = [
-                'title' => $bidding_price->grade,
-                'prices' => OpenBidding::where('grade', $bidding_price->grade)->whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('QP')->toArray(),
-                'dates' => $b_dates,
-                'bidding_number' => OpenBiddingParent::whereDate('created_at', '>=', Carbon::now()->subDays($request->days))->pluck('bidding_number')->toArray()
-            ];
-        }
-        if (count($bidding_prices) > 0) {
+            if (count($bidding_prices) > 0) {
+                return response()->json([
+                    "status" => 200,
+                    "data" => $bidding_prices
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 404,
+                    "message" => "not found any data"
+                ]);
+            }
+        }else{
             return response()->json([
-                "status" => 200,
-                "data" => $bidding_prices
-            ]);
-        } else {
-            return response()->json([
-                "status" => 404,
-                "message" => "not found any data"
+                "status" => 403,
+                "message" => "data not exist for ".$request->days." days"
             ]);
         }
     }

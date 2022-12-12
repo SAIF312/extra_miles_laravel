@@ -30,7 +30,7 @@ class MalaysianFuelPrices extends Command
     {
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.121:5000/malaysian_fuel_prices');
+        $response = $client->request('get', 'http://137.184.227.191:5000/malaysian_fuel_prices');
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();
         $mfp = MalysianFuelPrice::where('price_change_flag', 'true')->orderBy('id', 'desc')->first();

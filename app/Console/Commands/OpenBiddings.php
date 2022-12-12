@@ -30,7 +30,7 @@ class OpenBiddings extends Command
     {
 
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.121:5000/coe_open_bidding');
+        $response = $client->request('get', 'http://137.184.227.191:5000/coe_open_bidding');
         $response = json_decode($response->getBody()->getContents());
         if ($response->message != '') {
             //

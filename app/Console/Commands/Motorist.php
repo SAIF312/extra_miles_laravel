@@ -30,7 +30,7 @@ class Motorist extends Command
     public function handle()
     {
         $client = new \GuzzleHttp\Client();
-        $response = $client->request('get', 'http://192.168.18.121:5000/motorist');
+        $response = $client->request('get', 'http://137.184.227.191:5000/motorist');
 
         $response = json_decode($response->getBody()->getContents());
         $code = uniqid();

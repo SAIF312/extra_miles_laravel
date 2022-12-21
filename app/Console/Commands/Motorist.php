@@ -56,7 +56,6 @@ class Motorist extends Command
 
                     if ($change != 0.0) {
 
-
                         $flag = "true";
                     }
                 }
@@ -73,7 +72,15 @@ class Motorist extends Command
                     foreach ($fuelprice->pump_price as $pump_price) {
                         if ($pump_price->pump == "https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg" && $fuelprice->grade != "98") {
                             $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                            continue;
+                            MotoristFuelPrice::create([
+                                'grade_id' => $grade_new->id,
+                                'grade' => $fuelprice->grade,
+                                'pump' => $pump_price->pump,
+                                'price' => "N/A",
+                                'price_change_flag' => $flag,
+                                'change_in_price' => false,
+                                'currency' => "N/A"
+                            ]);
                         } else {
                             $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
                             MotoristFuelPrice::create([
@@ -103,7 +110,15 @@ class Motorist extends Command
                     $motor = MotoristFuelPrice::where('grade_id', $grade->id)->where('pump', $pump_price->pump)->orderBy('created_at', 'desc')->first();
                     if ($pump_price->pump == "https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg" && $fuelprice->grade != "98") {
                         // $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                        continue;
+                        MotoristFuelPrice::create([
+                            'grade_id' => $grade->id,
+                            'grade' => $fuelprice->grade,
+                            'pump' => $pump_price->pump,
+                            'price' => "N/A",
+                            'price_change_flag' => $flag,
+                            'change_in_price' => "N/A",
+                            'currency' => "N/A"
+                        ]);
                     } else {
                         MotoristFuelPrice::create([
                             'grade_id' => $grade->id,

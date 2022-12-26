@@ -40,24 +40,29 @@ class Motorist extends Command
         // $count = 0;
         $flag = "false";
 
+        $motor = MotoristFuelPrice::orderBy('id', 'desc')->first();
+        // $grade = MotoristFuelPrice::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
+        // dd($grade);
+        // $count = 0;
+        $flag = "false";
         if ($motor) {
             // $count = 1;
             foreach ($response->fuel_prices as $key => $fuelprice) {
                 $grade_old = Grade::where('grade', $fuelprice->grade)->where('price_change_flag', 'true')->latest()->first();
-
                 foreach ($fuelprice->pump_price as $pump_price) {
-
                     $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('price_change_flag', 'true')->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                    $change = 0.0;
-                    if ($pump_price->pump == "https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg" && $fuelprice->grade != "98") {
-                        continue;
-                    }
                     $change =  number_format((float)$pump_price->price, 2) - number_format((float)$motor->price, 2);
-
+                    // if($count = 1){
+                    //     // dd($change);
+                    // }
+                    // dd((float)$pump_price->price);
                     if ($change != 0.0) {
-
+                        // dump((float)$pump_price->price);
+                        // dump((float)$motor->price);
+                        // dd((float)$change);
                         $flag = "true";
                     }
+                    // $count = $count + 1;
                 }
             }
             if ($flag == "true") {
@@ -68,31 +73,17 @@ class Motorist extends Command
                         'unique_group_id' => $code,
                         'price_change_flag' => $flag
                     ]);
-
                     foreach ($fuelprice->pump_price as $pump_price) {
-                        if ($pump_price->pump == "https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg" && $fuelprice->grade != "98") {
-                            $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                            MotoristFuelPrice::create([
-                                'grade_id' => $grade_new->id,
-                                'grade' => $fuelprice->grade,
-                                'pump' => $pump_price->pump,
-                                'price' => "N/A",
-                                'price_change_flag' => $flag,
-                                'change_in_price' => false,
-                                'currency' => "N/A"
-                            ]);
-                        } else {
-                            $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                            MotoristFuelPrice::create([
-                                'grade_id' => $grade_new->id,
-                                'grade' => $fuelprice->grade,
-                                'pump' => $pump_price->pump,
-                                'price' => (float)$pump_price->price,
-                                'price_change_flag' => $flag,
-                                'change_in_price' => (float)$pump_price->price - $motor->price,
-                                'currency' => $pump_price->currency
-                            ]);
-                        }
+                        $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
+                        MotoristFuelPrice::create([
+                            'grade_id' => $grade_new->id,
+                            'grade' => $fuelprice->grade,
+                            'pump' => $pump_price->pump,
+                            'price' => (float)$pump_price->price,
+                            'price_change_flag' => $flag,
+                            'change_in_price' => (float)$pump_price->price - $motor->price,
+                            'currency' => $pump_price->currency
+                        ]);
                     }
                 }
             }
@@ -104,37 +95,20 @@ class Motorist extends Command
                     'unique_group_id' => $code,
                     'price_change_flag' => 'true'
                 ]);
-
                 foreach ($fuelprice->pump_price as $pump_price) {
-
                     $motor = MotoristFuelPrice::where('grade_id', $grade->id)->where('pump', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                    if ($pump_price->pump == "https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg" && $fuelprice->grade != "98") {
-                        // $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
-                        MotoristFuelPrice::create([
-                            'grade_id' => $grade->id,
-                            'grade' => $fuelprice->grade,
-                            'pump' => $pump_price->pump,
-                            'price' => "N/A",
-                            'price_change_flag' => $flag,
-                            'change_in_price' => "N/A",
-                            'currency' => "N/A"
-                        ]);
-                    } else {
-                        MotoristFuelPrice::create([
-                            'grade_id' => $grade->id,
-                            'grade' => $fuelprice->grade,
-                            'pump' => $pump_price->pump,
-                            'price' => (float)$pump_price->price,
-                            'change_in_price' => (float)0.0,
-                            'price_change_flag' => 'true',
-                            'currency' => $pump_price->currency
-                        ]);
-                    }
+                    MotoristFuelPrice::create([
+                        'grade_id' => $grade->id,
+                        'grade' => $fuelprice->grade,
+                        'pump' => $pump_price->pump,
+                        'price' => (float)$pump_price->price,
+                        'change_in_price' => (float)0.0,
+                        'price_change_flag' => 'true',
+                        'currency' => $pump_price->currency
+                    ]);
                 }
             }
         }
-
-
         return Command::SUCCESS;
     }
 }

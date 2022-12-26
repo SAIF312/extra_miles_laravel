@@ -118,7 +118,7 @@ class ApiController extends Controller
     }
     public function traffic_images_api()
     {
-        $open_bidding = TraficImage::whereIn('camera_id', ['4703', '2702', '2701']);
+        $open_bidding = TraficImage::whereIn('camera_id', ['4703', '2702', '2701'])->get();
         // $data = CheckPoint::with('trafic_images')->whereIn('title',['wtc1','wtc'])->get();
         // $data = TraficImage::where('unique_group_id', $open_bidding->unique_group_id)->get()->makeHidden(['unique_group_id']);
         if ($open_bidding) {

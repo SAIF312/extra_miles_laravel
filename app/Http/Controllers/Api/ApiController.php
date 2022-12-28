@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Models\{AddCarParking, MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, CheckPoint, Grade, OpenBiddingParent};
+use App\Models\{AddCarParking, MotoristFuelPrice, OpenBidding, MalysianFuelPrice, TraficImage, CarParkingDaysPrice, CarParking, CheckPoint, Grade, OpenBiddingParent, Subscriber};
 
 class ApiController extends Controller
 {
@@ -550,5 +550,25 @@ class ApiController extends Controller
                 "message" => "Choose days values from 30, 180,360"
             ]);
         }
+    }
+    public function subscribe(Request $request){
+        $this->validate($request, [
+            'email' => 'required|email|unique:subscribers,email|max:191',
+        ]);
+        try{
+            $subscribe = Subscriber::create($request->all());
+            if($subscribe){
+                return response()->json([
+                    "status"=>200,
+                    "message"=>"you have subscribe successfully!"
+                ],200);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                "status"=>500,
+                "message"=>$e->getMessage()
+            ],500);
+        }
+
     }
 }

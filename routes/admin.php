@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{DashboardController, MotoristController, MalaysianController, OpenbiddingController, TraficImageController, CarParkingController, ProfileController};
+use App\Http\Controllers\Admin\{DashboardController, MotoristController, MalaysianController, OpenbiddingController, TraficImageController, CarParkingController, ProfileController, SubscriberController};
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +66,10 @@ Route::middleware('auth')->group(function () {
         Route:: post('update', 'update')->name('update');
         Route:: post('updatePassword', 'updatePassword')->name('updatePassword');
     });
+
+    Route::get('/subscriber/index',[SubscriberController::class, 'index'])->name('subscriber.index');
+    Route::get('/subscriber/show',[SubscriberController::class, 'index_data_table'])->name('subscriber.show');
+    Route::get('/subscriber/delete',[SubscriberController::class, 'delete_subscriber'])->name('subscriber.delete');
 });
 
 

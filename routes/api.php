@@ -44,3 +44,6 @@ Route::post('open_bidding_price_graph',[ApiController::class,'open_bidding_price
 
 
 
+Route::post('subscribe',[ApiController::class,'subscribe']);
+
+

@@ -262,7 +262,10 @@ class ApiController extends Controller
                 ]);
             }
         } elseif ($request->days == 180) {
-            if (MotoristFuelPrice::whereDate('created_at', '>', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '<=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
+            // return date('Y-m-d', strtotime(Carbon::now()->subDays($request->days)));
+            // return date('Y-m-d', strtotime(Carbon::now()->subDays(30)));
+            // return MotoristFuelPrice::whereDate('created_at', '<', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '>=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count();
+            if (MotoristFuelPrice::whereDate('created_at', '<', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '>=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
                 $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
                 // return $pumps;
                 $grade = Grade::where('grade', $request->grade)->first();
@@ -305,7 +308,7 @@ class ApiController extends Controller
                 ]);
             }
         } elseif ($request->days == 360) {
-            if (MotoristFuelPrice::whereDate('created_at', '>', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '<=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
+            if (MotoristFuelPrice::whereDate('created_at', '<', date('Y-m-d', strtotime(Carbon::now()->subDays(180))))->whereDate('created_at', '>=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
                 $pumps = array_reverse(MotoristFuelPrice::orderBy('id', 'desc')->limit(5)->pluck('pump')->toArray());
                 // return $pumps;
                 $grade = Grade::where('grade', $request->grade)->first();
@@ -474,7 +477,7 @@ class ApiController extends Controller
             // $data = OpenBidding::whereDate('created_at', '>=', date('Y-m-d',strtotime(Carbon::now()->subDays($request->days))))->whereDate('created_at', '<', date('Y-m-d',strtotime(Carbon::now()->subDays(30))))->get();
             // dd(count($data));
 
-            if (OpenBidding::whereDate('created_at', '>', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '<=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
+            if (OpenBidding::whereDate('created_at', '<', date('Y-m-d', strtotime(Carbon::now()->subDays(30))))->whereDate('created_at', '>=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
                 $unique =  OpenBidding::latest()->value('unique_group_id');
                 $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
                 foreach ($bidding_prices as $index => $bidding_price) {
@@ -508,7 +511,7 @@ class ApiController extends Controller
                 ]);
             }
         } elseif ($request->days == 360) {
-            if (OpenBidding::whereDate('created_at', '>', date('Y-m-d', strtotime(Carbon::now()->subDays(180))))->whereDate('created_at', '<=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
+            if (OpenBidding::whereDate('created_at', '<', date('Y-m-d', strtotime(Carbon::now()->subDays(180))))->whereDate('created_at', '>=', date('Y-m-d', strtotime(Carbon::now()->subDays($request->days))))->count() > 0) {
                 $unique =  OpenBidding::latest()->value('unique_group_id');
                 $bidding_prices = OpenBidding::where('unique_group_id', $unique)->get()->makeHidden(['unique_group_id']);
                 foreach ($bidding_prices as $index => $bidding_price) {

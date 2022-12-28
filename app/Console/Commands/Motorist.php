@@ -40,31 +40,29 @@ class Motorist extends Command
         // $count = 0;
         $flag = "false";
 
+        $motor = MotoristFuelPrice::orderBy('id', 'desc')->first();
+        // $grade = MotoristFuelPrice::where('unique_group_id' , $motor->unique_group_id)->with('motorist_fuel_prices')->get();
+        // dd($grade);
+        // $count = 0;
+        $flag = "false";
         if ($motor) {
             // $count = 1;
             foreach ($response->fuel_prices as $key => $fuelprice) {
                 $grade_old = Grade::where('grade', $fuelprice->grade)->where('price_change_flag', 'true')->latest()->first();
-
                 foreach ($fuelprice->pump_price as $pump_price) {
-
                     $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('price_change_flag', 'true')->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
                     $change =  number_format((float)$pump_price->price, 2) - number_format((float)$motor->price, 2);
                     // if($count = 1){
                     //     // dd($change);
                     // }
                     // dd((float)$pump_price->price);
-
                     if ($change != 0.0) {
                         // dump((float)$pump_price->price);
                         // dump((float)$motor->price);
-
                         // dd((float)$change);
-
-
                         $flag = "true";
                     }
                     // $count = $count + 1;
-
                 }
             }
             if ($flag == "true") {
@@ -75,7 +73,6 @@ class Motorist extends Command
                         'unique_group_id' => $code,
                         'price_change_flag' => $flag
                     ]);
-
                     foreach ($fuelprice->pump_price as $pump_price) {
                         $motor = MotoristFuelPrice::where('grade_id', $grade_old->id)->where('pump', 'like', $pump_price->pump)->orderBy('created_at', 'desc')->first();
                         MotoristFuelPrice::create([
@@ -98,9 +95,7 @@ class Motorist extends Command
                     'unique_group_id' => $code,
                     'price_change_flag' => 'true'
                 ]);
-
                 foreach ($fuelprice->pump_price as $pump_price) {
-
                     $motor = MotoristFuelPrice::where('grade_id', $grade->id)->where('pump', $pump_price->pump)->orderBy('created_at', 'desc')->first();
                     MotoristFuelPrice::create([
                         'grade_id' => $grade->id,
@@ -114,8 +109,6 @@ class Motorist extends Command
                 }
             }
         }
-
-
         return Command::SUCCESS;
     }
 }

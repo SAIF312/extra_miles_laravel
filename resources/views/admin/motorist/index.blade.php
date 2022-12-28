@@ -55,7 +55,13 @@
                                     @foreach ($latest_price_singapore as $prices_singapore)
                                         <tr>
                                             <td>{{ $prices_singapore->motorist_fuel_prices[0]->grade }}</td>
+
                                             @foreach ($prices_singapore->motorist_fuel_prices as $singapore_price)
+                                                @if ($motorist->pump ==
+                                                    'https://www.motorist.sg/assets/caltexlogo-2a1e4d23153d831761ad0f0eef0a12d7858041e27260f4b0bcc83a7ddb64349d.svg' &&
+                                                    $fuelprice->grade != '98')
+                                                    <td>N/A</td>
+                                                @endif
                                                 @if ($singapore_price->price == 0.0 || $singapore_price->price == 0)
                                                     <td>N/A</td>
                                                 @else

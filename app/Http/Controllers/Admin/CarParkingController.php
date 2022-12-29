@@ -18,6 +18,7 @@ class CarParkingController extends Controller
     public function index_data_table()
     {
         $unique_groups = CarParking::all();
+        //asasas
         if (request()->ajax()) {
             return DataTables::of($unique_groups)
                 ->addIndexColumn()

@@ -204,7 +204,7 @@
 
                         <li class="menu">
                             <a href="{{route('motorist.price')}}"
-                                data-active="{{ Request::is(['user', 'user/*']) ? 'true' : 'false' }}"
+                                data-active="{{ Request::is(['*/motorist', '*/motorist/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Singapore Fuel Price</span>
@@ -215,7 +215,7 @@
 
                         <li class="menu">
                             <a href="{{ route('malaysian.price') }}"
-                                data-active="{{ Request::is(['package', 'package/*']) ? 'true' : 'false' }}"
+                                data-active="{{ Request::is(['*/malaysian', '*/malaysian/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Malaysia Fuel Price</span>
@@ -225,7 +225,7 @@
 
                         <li class="menu">
                             <a href="{{route('openbidding.price') }}"
-                                data-active="{{ Request::is(['subscription', 'subscription/*']) ? 'true' : 'false' }}"
+                                data-active="{{ Request::is(['*/openbidding', '*/openbidding/*']) ? 'true' : 'false' }}"
                                 aria-expanded="false" class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-tint"></i>&nbsp;&nbsp;&nbsp;Open Bidding</span>
@@ -235,7 +235,7 @@
 
                         <li class="menu">
                             <a href="{{ route('Trafic_images.price') }}"
-                                data-active="{{ Request::is(['payments', 'payments/*']) ? 'true' : 'false' }}" aria-expanded="false"
+                                data-active="{{ Request::is(['*/trafic/', '*/trafic/*']) ? 'true' : 'false' }}" aria-expanded="false"
                                 class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-globe"
@@ -245,9 +245,17 @@
                         </li>
 
                         <li class="menu">
-                            <a href="{{ route('carparking.price') }}" data-active="{{Request::is(['scan','scan/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
+                            <a href="{{ route('carparking.price') }}" data-active="{{Request::is(['*/parking','*/parking/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
                                 <div>
                                     <span> <i class="fa fa-car"></i>&nbsp;&nbsp;&nbsp;Car Parking Rates</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="menu">
+                            <a href="{{ route('subscriber.index') }}" data-active="{{Request::is(['*/subscriber','*/subscriber/*']) ? 'true' : 'false'}}" aria-expanded="false" class="dropdown-toggle">
+                                <div>
+                                    <span> <i class="fa fa-users"></i>&nbsp;&nbsp;&nbsp;Subscribers</span>
                                 </div>
                             </a>
                         </li>

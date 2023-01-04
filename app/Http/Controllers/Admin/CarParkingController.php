@@ -101,7 +101,8 @@ class CarParkingController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'latitude' => $request->latitude,
-            'longitude' => $request->longitude
+            'longitude' => $request->longitude,
+            'location' => str_replace("\"","",str_replace("src=\"","",explode(' ',$request->location)[1]))
         ]);
 
         foreach ($request->days as $key => $day) {

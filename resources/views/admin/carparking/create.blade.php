@@ -57,6 +57,10 @@
                                             <input type="text" name="longitude" class="form-control" id="exampleInputPassword1"
                                                 placeholder="72.74597533383863">
                                         </div>
+                                        <div class="col-md-12 col-sm-12 form-group">
+                                            <label for="exampleInputPassword1">Location</label>
+                                            <textarea type="text" name="location" class="form-control" id="exampleInputPassword1"></textarea>
+                                        </div>
                                         <div class="col-12">
                                             <hr>
                                             <h3>Insert Timetable and Price</h3>
